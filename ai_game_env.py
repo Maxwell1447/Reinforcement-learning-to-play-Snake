@@ -20,6 +20,8 @@ class IAGameEnv(Env, GameEnv):
 
         Env.__init__(self)
         GameEnv.__init__(self, grid)
+        self.FPS = -1
+        self.clock = None
 
         # Define action and observation space
         # They must be gym.spaces objects
@@ -31,6 +33,10 @@ class IAGameEnv(Env, GameEnv):
         self.reset()
 
     def step(self, action_number):
+
+        if self.FPS > 0:
+            self.clock.tick(self.FPS)
+
         self.snake.update_direction(action_number)
 
         if self.snake.check_death():
@@ -59,6 +65,12 @@ class IAGameEnv(Env, GameEnv):
     def observation(self):
         pxl_array = np.array(pyg.PixelArray(self.screen))
         return self.hex_to_rgb(pxl_array).T.astype(np.uint8)
+
+    def set_fps(self, fps: int):
+        if fps > 0:
+            if self.FPS < 0:
+                self.clock = pyg.time.Clock()
+            self.FPS = fps
 
     @staticmethod
     def hex_to_rgb(value):

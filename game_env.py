@@ -3,6 +3,7 @@ import pygame as pyg
 from pygame.locals import *
 from snake import *
 import sys
+from ctypes import windll, Structure, c_long, byref
 
 
 class GameEnv:
@@ -12,6 +13,7 @@ class GameEnv:
         self.snake = None
         self.apple = None
         self.screen = None
+        self.FPS = 10
 
     def start(self):
         self.snake: Snake = Snake(self.grid)
@@ -19,6 +21,7 @@ class GameEnv:
         pyg.init()
         self.screen = pyg.display.set_mode((self.grid.x * self.grid.scale, self.grid.y * self.grid.scale))
         pyg.display.set_caption("Snake")
+        on_top(pyg.display.get_wm_info()['window'])
         self.draw()
 
     def keyboard_action(self, i_dir):
@@ -134,3 +137,26 @@ class GameEnv:
             self.draw()
         print("Game Over")
         pyg.quit()
+
+
+class RECT(Structure):
+    _fields_ = [
+        ('left', c_long),
+        ('top', c_long),
+        ('right', c_long),
+        ('bottom', c_long),
+    ]
+
+    def width(self):
+        return self.right - self.left
+
+    def height(self):
+        return self.bottom - self.top
+
+
+def on_top(window):
+    set_window_pos = windll.user32.SetWindowPos
+    get_window_pos = windll.user32.GetWindowRect
+    rc = RECT()
+    get_window_pos(window, byref(rc))
+    set_window_pos(window, -1, rc.left, rc.top, 0, 0, 0x0001)
