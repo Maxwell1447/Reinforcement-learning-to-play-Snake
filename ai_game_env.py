@@ -54,17 +54,19 @@ class IAGameEnv(Env, GameEnv):
 
         self.snake.move()
         self.render()
-        return self.observation(), STEP_REWARD, False, None
+        return self.observation(), STEP_REWARD, False, {}
 
     def reset(self):
         self.start()
+        return self.observation()
 
     def render(self, mode='human', close=False):
         self.draw()
 
     def observation(self):
+
         pxl_array = np.array(pyg.PixelArray(self.screen))
-        return self.hex_to_rgb(pxl_array).T.astype(np.uint8)
+        return np.stack(self.hex_to_rgb(pxl_array), axis=2)
 
     def set_fps(self, fps: int):
         if fps > 0:
