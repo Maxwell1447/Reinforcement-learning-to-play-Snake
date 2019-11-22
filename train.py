@@ -1,5 +1,6 @@
 from ai_game_env import *
 from snake import *
+import gym
 
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Flatten, Conv2D, Input
@@ -28,7 +29,6 @@ model.add(Dense(16))
 model.add(Dense(env.action_space.n))
 
 print(model.summary())
-print(env.observation().shape)
 print(env.observation_space.shape)
 
 policy = EpsGreedyQPolicy()

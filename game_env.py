@@ -52,9 +52,9 @@ class GameEnv:
             """
 
         self.screen.fill((20, 20, 20))  # Overlay the screen with a black-gray surface
-        apple_color = (230, 0, 0)
-        head_color = (0, 200, 0)
-        body_color = (20, 20, 200)
+        apple_color = (240, 0, 0)
+        head_color = (0, 160, 0)
+        body_color = (50, 50, 200)
 
         # draw the apple
         pyg.draw.rect(self.screen, apple_color,

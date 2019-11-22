@@ -40,7 +40,7 @@ class IAGameEnv(Env, GameEnv):
         self.snake.update_direction(action_number)
 
         if self.snake.check_death():
-            return self.observation(), DEATH_REWARD, True, None
+            return self.observation(), DEATH_REWARD, True, {}
 
         if self.snake.next_box() == self.apple:
             # We need to make the snake grow before moving to the apple
@@ -50,7 +50,7 @@ class IAGameEnv(Env, GameEnv):
             self.apple = self.apple_spawn()  # spawn a new apple
             self.snake.move()
             self.render()
-            return self.observation(), APPLE_REWARD, False, None
+            return self.observation(), APPLE_REWARD, False, {}
 
         self.snake.move()
         self.render()
@@ -65,7 +65,7 @@ class IAGameEnv(Env, GameEnv):
 
     def observation(self):
 
-        pxl_array = np.array(pyg.PixelArray(self.screen))
+        pxl_array = np.array(pyg.PixelArray(self.screen), dtype=np.uint8)
         return np.stack(self.hex_to_rgb(pxl_array), axis=2)
 
     def set_fps(self, fps: int):
