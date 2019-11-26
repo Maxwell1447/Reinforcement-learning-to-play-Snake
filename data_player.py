@@ -23,15 +23,12 @@ class DataPlayerEnv(PlayerEnv):
         df['x-'] = pd.Series(max(-self.snake.direction[0],0))
         df['y+'] = pd.Series(max(self.snake.direction[1],0))
         df['y-'] = pd.Series(max(-self.snake.direction[1],0))
-        df['Left'] = pd.Series(0)
-        df['Right'] = pd.Series(0)
-        df['Forward'] = pd.Series(0)
         if action=='Right':
-            df['Right'] = pd.Series(1)
+            df['Action'] = pd.Series(0)
         if action=='Left':
-            df['Left'] = pd.Series(1)
+            df['Action'] = pd.Series(1)
         if action=='Forward':
-            df['Forward'] = pd.Series(1)
+            df['Action'] = pd.Series(2)
         self.tab = self.tab.append(df)
         
         
