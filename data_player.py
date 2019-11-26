@@ -11,18 +11,29 @@ class DataPlayerEnv(PlayerEnv):
     def __init__(self, grid: Grid):
         super().__init__(grid)
         self.tab = pd.DataFrame()
-        
-    def update_left(self):
-        df = pd.DataFrame({'Head': [self.snake.head()], 'Body': [self.snake.body[:]], 'Apple' : [self.apple], 'Left' : [1], 'Right' : [0],'Forward' : [0]})
-        self.tab = self.tab.append(df)
     
-    def update_right(self):
-        df = pd.DataFrame({'Head': [self.snake.head()], 'Body': [self.snake.body[:]], 'Apple' : [self.apple], 'Left' : [0], 'Right' : [1],'Forward' : [0]})
+    def update(self, action: str):
+        df = pd.DataFrame({'Headx': [self.snake.head()[0]], 'Heady': [self.snake.head()[1]], 'Applex' : [self.apple[0]], 'Appley' : [self.apple[1]]})
+        for i in range(20):
+            for j in range(20):
+                df[str(i)+"&"+str(j)] = pd.Series(0)
+        for (x,y) in self.snake.body:
+            df[str(x)+"&"+str(y)] = pd.Series(1)
+        df['x+'] = pd.Series(max(self.snake.direction[0],0))
+        df['x-'] = pd.Series(max(-self.snake.direction[0],0))
+        df['y+'] = pd.Series(max(self.snake.direction[1],0))
+        df['y-'] = pd.Series(max(-self.snake.direction[1],0))
+        df['Left'] = pd.Series(0)
+        df['Right'] = pd.Series(0)
+        df['Forward'] = pd.Series(0)
+        if action=='Right':
+            df['Right'] = pd.Series(1)
+        if action=='Left':
+            df['Left'] = pd.Series(1)
+        if action=='Forward':
+            df['Forward'] = pd.Series(1)
         self.tab = self.tab.append(df)
         
-    def update_forward(self):
-        df = pd.DataFrame({'Head': [self.snake.head()], 'Body': [self.snake.body[:]], 'Apple' : [self.apple], 'Left' : [0], 'Right' : [0],'Forward' : [1]})
-        self.tab = self.tab.append(df)
         
     def keyboard_action(self, i_dir):
         """
@@ -32,11 +43,11 @@ class DataPlayerEnv(PlayerEnv):
         dir_ = self.snake.direction
         if dir_[0] * i_dir[0] + dir_[1] * i_dir[1] == 0:
             if dir_[0] * i_dir[1] - dir_[1] * i_dir[0] < 0:
+                self.update('Left')
                 self.snake.turn_left()
-                self.update_left()
             else:
+                self.update('Right')
                 self.snake.turn_right()
-                self.update_right()
                 
    
         
@@ -67,7 +78,9 @@ class DataPlayerEnv(PlayerEnv):
 
             # Human events --> change the snake direction
             # Need to be replaced by the machine decision
-            for event in pyg.event.get():
+            events = pyg.event.get()
+                
+            for event in events:
                 if event.type == QUIT:
                     pyg.quit()
                     sys.exit("Quit game")
@@ -85,8 +98,8 @@ class DataPlayerEnv(PlayerEnv):
                     if event.key == K_DOWN:
                         self.keyboard_action([0, 1])
                         break
-               
-            self.update_forward()
+            else:
+                self.update('Forward')
 
             if self.snake.next_box() == self.apple:
                 # We need to make the snake grow before moving to the apple
