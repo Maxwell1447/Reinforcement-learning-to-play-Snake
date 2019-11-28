@@ -30,14 +30,14 @@ def fit_logreg(X, y):
     '''
     Wraps initialization and training of Logistic regression
     '''
-    logreg = LogisticRegression(C=1e20, solver='liblinear', max_iter=200) #
+    logreg = LogisticRegression(C=1e20, solver='liblinear', max_iter=500) #
     logreg.fit(X, y)
     
     return logreg
 
 def predict_and_test(model, X_test, y_test):
     '''
-    Predicts using a model received as input and then evaluates the accuracy of the predicted data. 
+'    Predicts using a model received as input and then evaluates the accuracy of the predicted data. 
     As inputs it receives the model, an input dataset X_test and the corresponding targets (ground thruth) y_test
     It returs the classification accuracy.
     '''
@@ -55,7 +55,7 @@ def predict_and_test(model, X_test, y_test):
     
     return correct/samples
 
-x_train = data.drop(['Action'], axis=1)
+x_train = data.drop(['Action', 'Unnamed: 0'], axis=1)
 y_train = data[['Action']]
 
 

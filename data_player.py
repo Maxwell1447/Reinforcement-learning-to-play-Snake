@@ -113,7 +113,7 @@ class DataPlayerEnv(PlayerEnv):
             # update the graphic elements
             self.draw()
         print("Game Over")
-        self.tab.to_csv('data.csv', mode='a')
+        self.tab.iloc[:len(self.tab)-10].to_csv('data.csv', mode='a',header=False)
         pyg.quit()
         
 dataplenv = DataPlayerEnv(Grid(20,20,20))
