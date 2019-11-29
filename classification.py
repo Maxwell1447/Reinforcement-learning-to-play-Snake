@@ -10,7 +10,7 @@ import numpy as np
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LogisticRegression
 
-datapath = 'C:/Users/Arnau/Documents/GitHub/Reinforcement-learning-to-play-Snake/data.csv'
+datapath = './data.csv'
 data = pd.read_csv(datapath)
 
 def prepare_data(ds):

@@ -6,7 +6,11 @@ Created on Thu Nov 28 13:16:34 2019
 """
 from sklearn.linear_model import LogisticRegression
 from game_env import GameEnv
+from snake import *
 from pygame.locals import *
+import pandas as pd
+import pygame as pyg
+import sys
 
 class ai_classification(GameEnv):
     
@@ -72,6 +76,7 @@ class ai_classification(GameEnv):
 
             df = self.state()
             action = self.logreg.predict([df.iloc[0]])
+            print(self.logreg.predict_proba([df.iloc[0]]))
             self.act(action[0])
 
             if self.snake.next_box() == self.apple:
