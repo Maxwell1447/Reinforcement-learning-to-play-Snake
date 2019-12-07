@@ -48,8 +48,8 @@ class GameEnv:
 
     def draw(self):
         """
-            Draw with Pygame
-            """
+        Draw with Pygame
+        """
 
         self.screen.fill((20, 20, 20))  # Overlay the screen with a black-gray surface
         apple_color = (230, 0, 0)

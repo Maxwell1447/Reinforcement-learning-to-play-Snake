@@ -30,7 +30,7 @@ def fit_logreg(X, y):
     '''
     Wraps initialization and training of Logistic regression
     '''
-    logreg = LogisticRegression(C=1e20, solver='liblinear', max_iter=500) #
+    logreg = LogisticRegression(C=1e20, solver='liblinear', max_iter=4000) #
     logreg.fit(X, y)
     
     return logreg

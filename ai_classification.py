@@ -7,6 +7,9 @@ Created on Thu Nov 28 13:16:34 2019
 from sklearn.linear_model import LogisticRegression
 from game_env import GameEnv
 from pygame.locals import *
+import pygame as pyg
+from snake import *
+import pandas as pd
 
 class ai_classification(GameEnv):
     
@@ -90,3 +93,7 @@ class ai_classification(GameEnv):
             self.draw()
         print("Game Over")
         pyg.quit()
+
+
+ai_class = ai_classification(Grid(20,20,20), logreg)
+ai_class.play()
