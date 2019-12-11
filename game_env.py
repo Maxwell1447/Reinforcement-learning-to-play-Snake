@@ -23,6 +23,12 @@ class GameEnv:
         pyg.display.set_caption("Snake")
         on_top(pyg.display.get_wm_info()['window'])
         self.draw()
+        
+    def set_FPS(self, fps):
+        if fps>0:
+            self.FPS = fps
+        else:
+            self.FPS = -1
 
     def keyboard_action(self, i_dir):
         """
@@ -97,8 +103,9 @@ class GameEnv:
                     starting = True
 
         while True:
-
-            clock.tick(10)  # FPS --> speed of the game for a human user
+            
+            if self.FPS > 0:
+                clock.tick(self.FPS)  # FPS --> speed of the game for a human user
 
             # Human events --> change the snake direction
             # Need to be replaced by the machine decision

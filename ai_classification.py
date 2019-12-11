@@ -28,11 +28,13 @@ class ai_classification(GameEnv):
     
     def state(self):
         df = pd.DataFrame({'Headx': [self.snake.head()[0]], 'Heady': [self.snake.head()[1]], 'Applex' : [self.apple[0]], 'Appley' : [self.apple[1]]})
+        '''
         for i in range(20):
             for j in range(20):
                 df[str(i)+"&"+str(j)] = pd.Series(0)
         for (x,y) in self.snake.body:
             df[str(x)+"&"+str(y)] = pd.Series(1)
+        '''
         df['x+'] = pd.Series(max(self.snake.direction[0],0))
         df['x-'] = pd.Series(max(-self.snake.direction[0],0))
         df['y+'] = pd.Series(max(self.snake.direction[1],0))

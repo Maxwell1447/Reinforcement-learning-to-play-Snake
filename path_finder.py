@@ -14,6 +14,7 @@ class PathFinder(GameEnv):
     def __init__(self, grid: Grid):
         super().__init__(grid)
         self.tab = pd.DataFrame()
+        self.FPS = -1
          
     def update_tab(self, action: str):
         df = pd.DataFrame({'Headx': [self.snake.head()[0]], 'Heady': [self.snake.head()[1]], 'Applex' : [self.apple[0]], 'Appley' : [self.apple[1]]})
@@ -164,7 +165,7 @@ class PathFinder(GameEnv):
   
         while True:
 
-            clock.tick(-1)  # FPS --> speed of the game for a human user
+            clock.tick(60)  # FPS --> speed of the game for a human user
 
             # path  finder
             action = self.update_path()
