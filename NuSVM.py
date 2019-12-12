@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Nov 26 19:57:14 2019
+Created on Wed Dec 11 15:08:17 2019
 
 @author: Arnau
 """
 
+
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import PolynomialFeatures
-from sklearn.linear_model import LogisticRegression
+from sklearn.svm import NuSVC
 
 datapath = 'C:/Users/Arnau/Documents/GitHub/Reinforcement-learning-to-play-Snake/data.csv'
 data = pd.read_csv(datapath)
@@ -28,10 +29,10 @@ def fit_logreg(X, y):
     '''
     Wraps initialization and training of Logistic regression
     '''
-    logreg = LogisticRegression(C=1e20, solver='saga',dual=False,n_jobs=-1, max_iter=1400) #
-    logreg.fit(X, y)
+    clf = NuSVC(kernel='rbf', random_state=0,gamma='auto', tol=1e-5) 
+    clf.fit(X, y)
     
-    return logreg
+    return clf
 
 def predict_and_test(model, X_test, y_test):
     '''
@@ -47,16 +48,13 @@ def predict_and_test(model, X_test, y_test):
 
 #x_train = data.drop(['Action', 'Unnamed: 0'], axis=1)
 x_train = data[['Headx','Heady','Applex','Appley','x+','x-','y+','y-']]
-x_train = prepare_data(x_train)
+#x_train = prepare_data(x_train)
 
 y_train = data[['Action']]
 
 
 
 clf = fit_logreg(x_train, y_train)
-print('*************** Estimated parameters: ***********************')
-print('[W_0,W] : [',clf.intercept_,',', clf.coef_, ']' )
-
 acc_test = predict_and_test(clf,x_train, y_train)
 print('******************  Training accuracy *********************')
 print('ACC multinomial: ', acc_test)

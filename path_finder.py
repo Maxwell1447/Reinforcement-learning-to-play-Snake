@@ -1,4 +1,3 @@
-from sklearn.linear_model import LogisticRegression
 from game_env import GameEnv
 from pygame.locals import *
 import pygame as pyg

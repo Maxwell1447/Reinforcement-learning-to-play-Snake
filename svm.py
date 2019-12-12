@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Nov 26 19:57:14 2019
+Created on Wed Dec 11 14:46:33 2019
 
 @author: Arnau
 """
@@ -8,7 +8,8 @@ Created on Tue Nov 26 19:57:14 2019
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import PolynomialFeatures
-from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import scale
+from sklearn.svm import LinearSVC
 
 datapath = 'C:/Users/Arnau/Documents/GitHub/Reinforcement-learning-to-play-Snake/data.csv'
 data = pd.read_csv(datapath)
@@ -28,10 +29,10 @@ def fit_logreg(X, y):
     '''
     Wraps initialization and training of Logistic regression
     '''
-    logreg = LogisticRegression(C=1e20, solver='saga',dual=False,n_jobs=-1, max_iter=1400) #
-    logreg.fit(X, y)
+    clf = LinearSVC(random_state=0, dual=False,tol=1e-5,max_iter=100) 
+    clf.fit(X, y)
     
-    return logreg
+    return clf
 
 def predict_and_test(model, X_test, y_test):
     '''

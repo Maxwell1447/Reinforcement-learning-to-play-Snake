@@ -10,6 +10,7 @@ from pygame.locals import *
 import pygame as pyg
 from snake import *
 import pandas as pd
+from sklearn.preprocessing import PolynomialFeatures
 
 class ai_classification(GameEnv):
     
@@ -28,6 +29,8 @@ class ai_classification(GameEnv):
     
     def state(self):
         df = pd.DataFrame({'Headx': [self.snake.head()[0]], 'Heady': [self.snake.head()[1]], 'Applex' : [self.apple[0]], 'Appley' : [self.apple[1]]})
+        
+        #comment to not consider the body
         '''
         for i in range(20):
             for j in range(20):
@@ -35,10 +38,25 @@ class ai_classification(GameEnv):
         for (x,y) in self.snake.body:
             df[str(x)+"&"+str(y)] = pd.Series(1)
         '''
+        
         df['x+'] = pd.Series(max(self.snake.direction[0],0))
         df['x-'] = pd.Series(max(-self.snake.direction[0],0))
         df['y+'] = pd.Series(max(self.snake.direction[1],0))
         df['y-'] = pd.Series(max(-self.snake.direction[1],0))
+        
+        
+        #uncomment to not use polynomial features
+
+        X_cols = df.copy()
+        X = X_cols.values
+        X = X.reshape(len(X_cols),-1)
+    
+        #To add the dummy x_0 and potentially features’ high-order
+        poly = PolynomialFeatures(2)  
+        X = poly.fit_transform(X)
+        df = pd.DataFrame(X)
+        
+    
         return df
     
     def act(self, action : int):
@@ -96,6 +114,7 @@ class ai_classification(GameEnv):
         print("Game Over")
         pyg.quit()
 
-
-ai_class = ai_classification(Grid(20,20,20), logreg)
+'''
+ai_class = ai_classification(Grid(20,20,20), clf)
 ai_class.play()
+'''
