@@ -7,7 +7,7 @@ import numpy as np
 
 
 DEATH_REWARD = -100
-APPLE_REWARD = 50
+APPLE_REWARD = 100
 STEP_REWARD = -1
 
 

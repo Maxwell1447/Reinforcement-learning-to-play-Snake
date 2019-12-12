@@ -16,7 +16,7 @@ class GameEnv:
         self.FPS = 10
 
     def start(self):
-        self.snake: Snake = Snake(self.grid)
+        self.snake = Snake(self.grid)
         self.apple = self.apple_spawn()
         pyg.init()
         self.screen = pyg.display.set_mode((self.grid.x * self.grid.scale, self.grid.y * self.grid.scale))
@@ -53,8 +53,8 @@ class GameEnv:
 
         self.screen.fill((20, 20, 20))  # Overlay the screen with a black-gray surface
         apple_color = (240, 0, 0)
-        head_color = (0, 160, 0)
-        body_color = (50, 50, 200)
+        head_color = (200, 255, 200)
+        body_color = (100, 100, 200)
 
         # draw the apple
         pyg.draw.rect(self.screen, apple_color,
