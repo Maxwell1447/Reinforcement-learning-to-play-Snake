@@ -72,9 +72,12 @@ class MaxwellQPolicy(Policy):
         assert q_values.ndim == 1
         q_values = q_values.astype('float64')
         max_val = np.max(np.abs(q_values))
+        # print("## max value = ", max_val)
         max_clip = max(np.abs(self.clip))
         if max_val > max_clip:
             q_values = q_values / max_val * max_clip
+
+        # print(max_val, " ######## ", q_values)
         nb_of_actions = q_values.shape[0]
 
         if np.random.uniform() < self.eps:
@@ -103,6 +106,8 @@ parser.add_argument('--mode', choices=['train', 'test'], default='train')
 parser.add_argument('--weights', type=str, default=None)
 parser.add_argument('--retrain', type=int, default=0)
 parser.add_argument('--step', type=int, default=0)
+parser.add_argument('--episodes', type=int, default=5)
+parser.add_argument('--initial_eps', type=float, default=0.3)
 args = parser.parse_args()
 
 # Get the environment and extract the number of actions.
@@ -149,11 +154,11 @@ processor = SnakeProcessor()
 # the agent initially explores the environment (high eps) and then gradually sticks to what it knows
 # (low eps). We also set a dedicated eps value that is used during testing. Note that we set it to 0.05
 # so that the agent still performs some random actions. This ensures that the agent cannot get stuck.
-policy = LinearAnnealedPolicy(EpsGreedyQPolicy(), attr='eps', value_max=.3, value_min=.1, value_test=.05,
+policy = LinearAnnealedPolicy(EpsGreedyQPolicy(), attr='eps', value_max=args.initial_eps, value_min=.1, value_test=.05,
                               nb_steps=1000000)
 
 # policy = BoltzmannQPolicy(tau=100)
-test_policy = MaxwellQPolicy(tau=10)
+test_policy = MaxwellQPolicy(tau=0.5, eps=.2)
 # The trade-off between exploration and exploitation is difficult and an on-going research topic.
 # If you want, you can experiment with the parameters or use a different policy. Another popular one
 # is Boltzmann-style exploration:
