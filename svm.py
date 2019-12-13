@@ -8,10 +8,9 @@ Created on Wed Dec 11 14:46:33 2019
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import PolynomialFeatures
-from sklearn.preprocessing import scale
 from sklearn.svm import LinearSVC
 
-datapath = 'C:/Users/Arnau/Documents/GitHub/Reinforcement-learning-to-play-Snake/data.csv'
+datapath = 'data.csv'
 data = pd.read_csv(datapath)
 
 def prepare_data(ds):
@@ -25,7 +24,7 @@ def prepare_data(ds):
 
     return X
 
-def fit_logreg(X, y):
+def fit_SVM(X, y):
     '''
     Wraps initialization and training of Logistic regression
     '''
@@ -54,7 +53,7 @@ y_train = data[['Action']]
 
 
 
-clf = fit_logreg(x_train, y_train)
+clf = fit_SVM(x_train, y_train)
 print('*************** Estimated parameters: ***********************')
 print('[W_0,W] : [',clf.intercept_,',', clf.coef_, ']' )
 

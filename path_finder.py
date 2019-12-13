@@ -1,5 +1,5 @@
 from game_env import GameEnv
-from pygame.locals import *
+from pygame.locals import * 
 import pygame as pyg
 from snake import *
 import numpy as np
@@ -22,7 +22,7 @@ class PathFinder(GameEnv):
                 df[str(i)+"&"+str(j)] = pd.Series(0)
         for (x,y) in self.snake.body:
             df[str(x)+"&"+str(y)] = pd.Series(1)
-        df['x+'] = pd.Series(max(self.snake.direction[0],0))
+        df['x+'] = pd.Series(max(self.snake.direction[0],0)) 
         df['x-'] = pd.Series(max(-self.snake.direction[0],0))
         df['y+'] = pd.Series(max(self.snake.direction[1],0))
         df['y-'] = pd.Series(max(-self.snake.direction[1],0))
@@ -42,7 +42,7 @@ class PathFinder(GameEnv):
             dir_[1] *= -1
             dir_.reverse()
             x_next = self.snake.head()[0] + dir_[0]
-            y_next = self.snake.head()[1] + dir_[1]
+            y_next = self.snake.head()[1] + dir_[1]  
             if [x_next,y_next] in self.snake.body:
                 self.act(1,count = count+1)
             else:

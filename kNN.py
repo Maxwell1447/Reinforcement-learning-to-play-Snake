@@ -12,7 +12,7 @@ from sklearn import neighbors
 
 n_neighbors = 1
 
-datapath = 'C:/Users/Arnau/Documents/GitHub/Reinforcement-learning-to-play-Snake/data.csv'
+datapath = 'data.csv'
 data = pd.read_csv(datapath)
 
 def prepare_data(ds):

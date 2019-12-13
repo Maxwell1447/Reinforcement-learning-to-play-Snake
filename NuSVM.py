@@ -11,7 +11,7 @@ import numpy as np
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.svm import NuSVC
 
-datapath = 'C:/Users/Arnau/Documents/GitHub/Reinforcement-learning-to-play-Snake/data.csv'
+datapath = 'data.csv'
 data = pd.read_csv(datapath)
 
 def prepare_data(ds):
@@ -25,7 +25,7 @@ def prepare_data(ds):
 
     return X
 
-def fit_logreg(X, y):
+def fit_NuSVM(X, y):
     '''
     Wraps initialization and training of Logistic regression
     '''
@@ -54,7 +54,7 @@ y_train = data[['Action']]
 
 
 
-clf = fit_logreg(x_train, y_train)
+clf = fit_NuSVM(x_train, y_train)
 acc_test = predict_and_test(clf,x_train, y_train)
 print('******************  Training accuracy *********************')
 print('ACC multinomial: ', acc_test)

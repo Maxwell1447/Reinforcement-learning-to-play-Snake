@@ -31,13 +31,13 @@ class ai_classification(GameEnv):
         df = pd.DataFrame({'Headx': [self.snake.head()[0]], 'Heady': [self.snake.head()[1]], 'Applex' : [self.apple[0]], 'Appley' : [self.apple[1]]})
         
         #comment to not consider the body
-        '''
+        
         for i in range(20):
             for j in range(20):
                 df[str(i)+"&"+str(j)] = pd.Series(0)
         for (x,y) in self.snake.body:
             df[str(x)+"&"+str(y)] = pd.Series(1)
-        '''
+        
         
         df['x+'] = pd.Series(max(self.snake.direction[0],0))
         df['x-'] = pd.Series(max(-self.snake.direction[0],0))
@@ -46,16 +46,16 @@ class ai_classification(GameEnv):
         
         
         #uncomment to not use polynomial features
-
+        '''
         X_cols = df.copy()
         X = X_cols.values
         X = X.reshape(len(X_cols),-1)
-    
+        
         #To add the dummy x_0 and potentially features’ high-order
         poly = PolynomialFeatures(2)  
         X = poly.fit_transform(X)
         df = pd.DataFrame(X)
-        
+        '''
     
         return df
     
