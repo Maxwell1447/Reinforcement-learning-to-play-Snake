@@ -1,5 +1,5 @@
 from __future__ import division
-from ai_game_env import *
+from env.ai_game_env import *
 from rl.policy import Policy
 
 

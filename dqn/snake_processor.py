@@ -1,6 +1,6 @@
 from __future__ import division
 from PIL import Image
-from ai_game_env import *
+from env.ai_game_env import *
 from rl.core import Processor
 
 

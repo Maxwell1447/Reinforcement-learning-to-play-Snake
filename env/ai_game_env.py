@@ -1,6 +1,6 @@
 from gym import Env
 from gym import spaces
-from game_env import GameEnv
+from env.game_env import GameEnv
 from snake import *
 import pygame as pyg
 import numpy as np

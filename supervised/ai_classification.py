@@ -5,7 +5,7 @@ Created on Thu Nov 28 13:16:34 2019
 @author: Arnau
 """
 from sklearn.linear_model import LogisticRegression
-from game_env import GameEnv
+from env.game_env import GameEnv
 from snake import *
 from pygame.locals import *
 import pandas as pd

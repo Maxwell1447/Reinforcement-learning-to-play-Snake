@@ -1,12 +1,12 @@
 from __future__ import division
-from ai_game_env import *
+from env.ai_game_env import *
 from keras.optimizers import Adam
 from rl.agents.dqn import DQNAgent
-from rl.policy import LinearAnnealedPolicy, BoltzmannQPolicy, EpsGreedyQPolicy, Policy
+from rl.policy import LinearAnnealedPolicy, EpsGreedyQPolicy
 from rl.memory import SequentialMemory
-import models
-from snake_processor import SnakeProcessor
-from policy import MaxwellQPolicy
+from dqn import models
+from dqn.snake_processor import SnakeProcessor
+from dqn.policy import MaxwellQPolicy
 
 
 class DQNSnake(DQNAgent):

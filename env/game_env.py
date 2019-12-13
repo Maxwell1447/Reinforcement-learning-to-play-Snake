@@ -52,7 +52,7 @@ class GameEnv:
             """
 
         self.screen.fill((20, 20, 20))  # Overlay the screen with a black-gray surface
-        apple_color = (240, 0, 0)
+        apple_color = (240, 10, 10)
         head_color = (200, 255, 200)
         body_color = (100, 100, 200)
 

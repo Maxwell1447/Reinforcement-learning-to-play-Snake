@@ -1,6 +1,6 @@
 import pygame as pyg
 from pygame.locals import *
-from player import PlayerEnv
+from env.player import PlayerEnv
 from snake import *
 import sys
 import pandas as pd

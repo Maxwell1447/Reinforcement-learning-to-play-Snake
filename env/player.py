@@ -1,6 +1,6 @@
 import pygame as pyg
 from pygame.locals import *
-from game_env import GameEnv
+from env.game_env import GameEnv
 from snake import *
 import sys
 

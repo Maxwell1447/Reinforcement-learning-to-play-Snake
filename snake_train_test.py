@@ -1,10 +1,9 @@
 from __future__ import division
 import argparse
-import pygame
-from ai_game_env import *
+from env.ai_game_env import *
 from snake import *
 from rl.callbacks import FileLogger, ModelIntervalCheckpoint
-from dqn import DQNSnake
+from dqn.dqn import DQNSnake
 
 
 grid = Grid(10, 10, 10)
@@ -30,7 +29,7 @@ if args.mode == 'test':
     if args.weights:
         weights_filename = args.weights
     else:
-        weights_filename = 'dqn_snake_weights_{}_{}.h5f'.format(args.version, args.retrain)
+        weights_filename = 'data\\dqn_snake_weights_{}_{}.h5f'.format(args.version, args.retrain)
 
     dqn.load_weights(weights_filename)
     env.set_fps(20)
@@ -38,17 +37,17 @@ if args.mode == 'test':
 
 elif args.mode == 'train':
     if args.weights:
-        weights_filename = args.weights
+        weights_filename = "data\\"+args.weights
     else:
-        weights_filename = 'dqn_snake_weights_{}_{}.h5f'.format(args.version, args.retrain - 1)
+        weights_filename = 'data\\dqn_snake_weights_{}_{}.h5f'.format(args.version, args.retrain - 1)
     try:
         dqn.load_weights(weights_filename)
     except OSError:
         pass
 
-    new_weights_filename = 'dqn_snake_weights_{}_{}.h5f'.format(args.version, args.retrain)
-    new_checkpoint_weights_filename = 'dqn_snake_weights_{}_{}.h5f'.format(args.version, "{step}")
-    log_filename = 'dqn_snake_log.json'
+    new_weights_filename = 'data\\dqn_snake_weights_{}_{}.h5f'.format(args.version, args.retrain)
+    new_checkpoint_weights_filename = 'data\\dqn_snake_weights_{}_{}.h5f'.format(args.version, "{step}")
+    log_filename = 'data\\dqn_snake_log.json'
     callbacks = [ModelIntervalCheckpoint(new_checkpoint_weights_filename, interval=250000)]
     callbacks += [FileLogger(log_filename, interval=100)]
 
