@@ -5,9 +5,7 @@ from snake import *
 import pandas as pd
 
 
-
 class PathFinder(GameEnv):
-    
      
     def __init__(self, grid: Grid):
         super().__init__(grid)
@@ -129,18 +127,9 @@ class PathFinder(GameEnv):
         
         #the apple is in front of him
         return 2
-        
-            
-        
-        
-    
+
     def start(self):
-        self.snake: Snake = Snake(self.grid)
-        self.apple = self.apple_spawn()
-        pyg.init()
-        self.screen = pyg.display.set_mode((self.grid.x * self.grid.scale, self.grid.y * self.grid.scale))
-        pyg.display.set_caption("Snake")
-        self.draw()
+        super().start()
         
     def play(self):
         """
@@ -181,13 +170,14 @@ class PathFinder(GameEnv):
             if self.snake.check_death():  # if it dies, we need to go outside
                 break
 
+            self.step_num += 1
             # update the graphic elements
             self.draw()
         print("Game Over")
         self.tab.iloc[:len(self.tab)-10].to_csv('data.csv', mode='a',header=False)
         pyg.quit()
-        
-        
+        return self.step_num, self.apple_score
+
         
 pf = PathFinder(Grid(20,20,20))
 pf.play()

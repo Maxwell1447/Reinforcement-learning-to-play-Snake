@@ -20,15 +20,6 @@ class ai_classification(GameEnv):
     def __init__(self, grid: Grid, logreg: LogisticRegression):
         super().__init__(grid)
         self.logreg = logreg
-        
-    
-    def start(self):
-        self.snake: Snake = Snake(self.grid)
-        self.apple = self.apple_spawn()
-        pyg.init()
-        self.screen = pyg.display.set_mode((self.grid.x * self.grid.scale, self.grid.y * self.grid.scale))
-        pyg.display.set_caption("Snake")
-        self.draw()
     
     def state(self):
         df = pd.DataFrame({'Headx': [self.snake.head()[0]], 'Heady': [self.snake.head()[1]], 'Applex' : [self.apple[0]], 'Appley' : [self.apple[1]]})
@@ -74,8 +65,8 @@ class ai_classification(GameEnv):
         
     def play(self):
         """
-            function to be called to launch a game as a human
-            """
+        function to be called to launch a game as a human
+        """
 
         self.start()
 
@@ -113,10 +104,13 @@ class ai_classification(GameEnv):
             if self.snake.check_death():  # if it dies, we need to go outside
                 break
 
+            self.step_num += 1
             # update the graphic elements
             self.draw()
         print("Game Over")
         pyg.quit()
+
+        return self.step_num, self.apple_score
 
 '''
 ai_class = ai_classification(Grid(20,20,20), clf)
