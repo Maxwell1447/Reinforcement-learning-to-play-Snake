@@ -27,7 +27,7 @@ dqn = DQNSnake(env, input_shape, args.version, args.initial_eps)
 
 if args.mode == 'test':
     if args.weights:
-        weights_filename = args.weights
+        weights_filename = "data\\"+args.weights
     else:
         weights_filename = 'data\\dqn_snake_weights_{}_{}.h5f'.format(args.version, args.retrain)
 

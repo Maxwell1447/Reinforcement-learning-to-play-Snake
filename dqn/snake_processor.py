@@ -8,7 +8,7 @@ class SnakeProcessor(Processor):
 
     def __init__(self, input_shape):
         super(SnakeProcessor, self).__init__()
-        self. input_shape = input_shape
+        self.input_shape = input_shape
 
     def process_observation(self, observation):
         assert observation.ndim == 3  # (height, width, channel)

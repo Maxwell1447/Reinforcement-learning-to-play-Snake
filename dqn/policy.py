@@ -10,7 +10,7 @@ class MaxwellQPolicy(Policy):
     an action selected randomly according to this law.
     """
 
-    def __init__(self, tau=1., clip=(-500., 500.), eps=0.3):
+    def __init__(self, tau=1., clip=(-700., 700.), eps=0.3):
         super(MaxwellQPolicy, self).__init__()
         self.tau = tau
         self.eps = eps
