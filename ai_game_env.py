@@ -7,7 +7,7 @@ import numpy as np
 
 
 DEATH_REWARD = -100
-APPLE_REWARD = 50
+APPLE_REWARD = 100
 STEP_REWARD = -1
 
 
@@ -66,6 +66,7 @@ class IAGameEnv(Env, GameEnv):
     def observation(self):
 
         pxl_array = np.array(pyg.PixelArray(self.screen), dtype=np.uint8)
+        # return self.hex_to_rgb(pxl_array)
         return np.stack(self.hex_to_rgb(pxl_array), axis=2)
 
     def set_fps(self, fps: int):
