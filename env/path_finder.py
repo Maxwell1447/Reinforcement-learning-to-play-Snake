@@ -1,8 +1,10 @@
 from env.game_env import GameEnv
 from pygame.locals import * 
 import pygame as pyg
-from snake import *
 import pandas as pd
+import sys
+from snake import *
+import sys
 
 
 
@@ -16,8 +18,8 @@ class PathFinder(GameEnv):
          
     def update_tab(self, action: str):
         df = pd.DataFrame({'Headx': [self.snake.head()[0]], 'Heady': [self.snake.head()[1]], 'Applex' : [self.apple[0]], 'Appley' : [self.apple[1]]})
-        for i in range(20):
-            for j in range(20):
+        for i in range(self.grid.x):
+            for j in range(self.grid.y):
                 df[str(i)+"&"+str(j)] = pd.Series(0)
         for (x,y) in self.snake.body:
             df[str(x)+"&"+str(y)] = pd.Series(1)
@@ -184,10 +186,8 @@ class PathFinder(GameEnv):
             # update the graphic elements
             self.draw()
         print("Game Over")
-        self.tab.iloc[:len(self.tab)-10].to_csv('data.csv', mode='a',header=False)
+        if self.grid.x == 20:
+            self.tab.iloc[:len(self.tab)-10].to_csv('./data/data_greedy_20.csv', mode='a',header=False)
+        elif self.grid.x == 10:
+            self.tab.iloc[:len(self.tab)-10].to_csv('./data/data_greedy_10.csv', mode='a',header=False)
         pyg.quit()
-        
-        
-        
-pf = PathFinder(Grid(20,20,20))
-pf.play()
