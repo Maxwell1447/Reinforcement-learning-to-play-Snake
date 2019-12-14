@@ -14,6 +14,8 @@ class GameEnv:
         self.apple = None
         self.screen = None
         self.FPS = 10
+        self.apple_score = 0
+        self.step_num = 0
 
     def start(self):
         self.snake = Snake(self.grid)
@@ -23,6 +25,8 @@ class GameEnv:
         pyg.display.set_caption("Snake")
         on_top(pyg.display.get_wm_info()['window'])
         self.draw()
+        self.apple_score = 0
+        self.step_num = 0
         
     def set_FPS(self, fps):
         if fps>0:
@@ -47,6 +51,7 @@ class GameEnv:
             Choose an empty place to spawn the new apple
             :return: the choice
             """
+        self.apple_score += 1
         choice = [rd.randint(0, self.grid.x - 1), rd.randint(0, self.grid.y - 1)]
         while choice in self.snake.body:
             choice = [rd.randint(0, self.grid.x - 1), rd.randint(0, self.grid.y - 1)]
@@ -134,16 +139,20 @@ class GameEnv:
                 # This is due to the implementation of the growth --> see Snake.grow()
                 self.snake.grow()
                 self.apple = self.apple_spawn()  # spawn a new apple
+                self.apple_score += 1
 
             self.snake.move()
 
             if self.snake.check_death():  # if it dies, we need to go outside
                 break
 
+            self.step_num += 1
             # update the graphic elements
             self.draw()
         print("Game Over")
         pyg.quit()
+
+        return self.step_num, self.apple_score
 
 
 class RECT(Structure):

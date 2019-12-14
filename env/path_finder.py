@@ -37,6 +37,7 @@ class PathFinder(GameEnv):
         
     def act(self, action : int, count=0):
         dir_ = self.snake.direction[:]
+        lim = self.grid.x
         if count > 2:
             return 0
         if action==0:
@@ -44,7 +45,7 @@ class PathFinder(GameEnv):
             dir_.reverse()
             x_next = self.snake.head()[0] + dir_[0]
             y_next = self.snake.head()[1] + dir_[1]  
-            if [x_next,y_next] in self.snake.body:
+            if ([x_next,y_next] in self.snake.body or x_next >= lim or x_next < 0 or y_next >= lim or y_next < 0):
                 self.act(1,count = count+1)
             else:
                 print("Right")
@@ -55,7 +56,7 @@ class PathFinder(GameEnv):
             dir_.reverse()
             x_next = self.snake.head()[0] + dir_[0]
             y_next = self.snake.head()[1] + dir_[1]
-            if [x_next,y_next] in self.snake.body:
+            if ([x_next,y_next] in self.snake.body or x_next >= lim or x_next < 0 or y_next >= lim or y_next < 0):
                 self.act(2,count = count+1)             
             else:
                 print("Left")
@@ -64,7 +65,7 @@ class PathFinder(GameEnv):
         elif action == 2:
             x_next = self.snake.head()[0] + dir_[0]
             y_next = self.snake.head()[1] + dir_[1]
-            if [x_next,y_next] in self.snake.body:
+            if ([x_next,y_next] in self.snake.body or x_next >= lim or x_next < 0 or y_next >= lim or y_next < 0):
                 self.act(0,count = count+1)
             else:
                 print("Forward")

@@ -115,3 +115,4 @@ class ai_classification(GameEnv):
             self.draw()
         print("Game Over")
         pyg.quit()
+        return self.step_num, self.apple_score
