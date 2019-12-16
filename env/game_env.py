@@ -138,10 +138,11 @@ class GameEnv:
                 # Otherwise the growth appears with a delay on the screen
                 # This is due to the implementation of the growth --> see Snake.grow()
                 self.snake.grow()
+                self.snake.move()
                 self.apple = self.apple_spawn()  # spawn a new apple
                 self.apple_score += 1
-
-            self.snake.move()
+            else:
+                self.snake.move()
 
             if self.snake.check_death():  # if it dies, we need to go outside
                 break

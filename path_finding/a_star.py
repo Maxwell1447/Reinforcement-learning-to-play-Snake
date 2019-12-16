@@ -72,6 +72,7 @@ class AStar:
                     # print(current.g, " + ", self.h(current), " = ", self.f(current))
                     path.append((current.x, current.y))
                     current = current.parent
+                path.pop(-1)
                 return path[::-1]
 
             for x, y in self.give_neighbours(current_node):
