@@ -1,37 +1,23 @@
 import pygame as pyg
 from pygame.locals import *
-from env.player import PlayerEnv
+from env.game_env import GameEnv
 from snake import *
 import sys
-import pandas as pd
 
 
-class DataPlayerEnv(PlayerEnv):
-    
+class PlayerEnv(GameEnv):
+
     def __init__(self, grid: Grid):
         super().__init__(grid)
-        self.tab = pd.DataFrame()
-    
-    def update(self, action: str):
-        df = pd.DataFrame({'Headx': [self.snake.head()[0]], 'Heady': [self.snake.head()[1]], 'Applex' : [self.apple[0]], 'Appley' : [self.apple[1]]})
-        for i in range(20):
-            for j in range(20):
-                df[str(i)+"&"+str(j)] = pd.Series(0)
-        for (x,y) in self.snake.body:
-            df[str(x)+"&"+str(y)] = pd.Series(1)
-        df['x+'] = pd.Series(max(self.snake.direction[0],0))
-        df['x-'] = pd.Series(max(-self.snake.direction[0],0))
-        df['y+'] = pd.Series(max(self.snake.direction[1],0))
-        df['y-'] = pd.Series(max(-self.snake.direction[1],0))
-        if action=='Right':
-            df['Action'] = pd.Series(0)
-        if action=='Left':
-            df['Action'] = pd.Series(1)
-        if action=='Forward':
-            df['Action'] = pd.Series(2)
-        self.tab = self.tab.append(df)
-        
-        
+
+    def start(self):
+        self.snake: Snake = Snake(self.grid)
+        self.apple = self.apple_spawn()
+        pyg.init()
+        self.screen = pyg.display.set_mode((self.grid.x * self.grid.scale, self.grid.y * self.grid.scale))
+        pyg.display.set_caption("Snake")
+        self.draw()
+
     def keyboard_action(self, i_dir):
         """
             Modifies the direction of the snake according to the key pressed by the human player
@@ -40,15 +26,10 @@ class DataPlayerEnv(PlayerEnv):
         dir_ = self.snake.direction
         if dir_[0] * i_dir[0] + dir_[1] * i_dir[1] == 0:
             if dir_[0] * i_dir[1] - dir_[1] * i_dir[0] < 0:
-                self.update('Left')
                 self.snake.turn_left()
             else:
-                self.update('Right')
                 self.snake.turn_right()
-                
-   
-        
-    
+
     def play(self):
         """
             function to be called to launch a game as a human
@@ -75,9 +56,7 @@ class DataPlayerEnv(PlayerEnv):
 
             # Human events --> change the snake direction
             # Need to be replaced by the machine decision
-            events = pyg.event.get()
-                
-            for event in events:
+            for event in pyg.event.get():
                 if event.type == QUIT:
                     pyg.quit()
                     sys.exit("Quit game")
@@ -95,8 +74,6 @@ class DataPlayerEnv(PlayerEnv):
                     if event.key == K_DOWN:
                         self.keyboard_action([0, 1])
                         break
-            else:
-                self.update('Forward')
 
             if self.snake.next_box() == self.apple:
                 # We need to make the snake grow before moving to the apple
@@ -113,8 +90,7 @@ class DataPlayerEnv(PlayerEnv):
             # update the graphic elements
             self.draw()
         print("Game Over")
-        self.tab.iloc[:len(self.tab)-10].to_csv('data.csv', mode='a',header=False)
         pyg.quit()
-        
-dataplenv = DataPlayerEnv(Grid(20,20,20))
-dataplenv.play()
+
+        return self.step_num, self.apple_score
+
