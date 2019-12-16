@@ -1,6 +1,7 @@
 from env.data_game_env import DataEnv
 from snake import *
-from path_finding.a_star import AStar
+from supervised.a_star import AStar
+from utils import scalar_product, cross_product_z
 
 
 class AStarEnv(DataEnv):
@@ -55,15 +56,3 @@ class AStarEnv(DataEnv):
             return "Left"
         else:
             raise ValueError("Impossible translation")
-
-
-def scalar_product(a, b):
-    assert len(a) == len(b) and len(a) == 2
-
-    return a[0]*b[0] + a[1]*b[1]
-
-
-def cross_product_z(a, b):
-    assert len(a) == len(b) and len(a) == 2
-
-    return a[0] * b[1] - a[1] * b[0]

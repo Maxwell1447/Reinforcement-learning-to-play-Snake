@@ -2,7 +2,6 @@ from env.game_env import GameEnv
 from pygame.locals import *
 import pygame as pyg
 import pandas as pd
-import sys
 from snake import *
 import sys
 
@@ -35,8 +34,9 @@ class DataEnv(GameEnv):
             df['Action'] = pd.Series(2)
         self.tab = self.tab.append(df)
 
-    def act(self, action: str):
-        self.update_tab(action)
+    def act(self, action: str, update=True):
+        if update:
+            self.update_tab(action)
         if action == "Right":
             self.snake.turn_right()
         elif action == "Left":
@@ -46,6 +46,13 @@ class DataEnv(GameEnv):
         else:
             raise ValueError("action has to be 'Right', 'Left' or 'Forward'")
 
+    def predict_death(self, action: str):
+        initial_direction = self.snake.direction.copy()
+        self.act(action, False)
+        prediction = self.snake.occupied_box(self.snake.next_box())
+        self.snake.direction = initial_direction
+        return prediction
+
     def choose_action(self):
         """abstract method to be implemented"""
 
@@ -54,23 +61,15 @@ class DataEnv(GameEnv):
     def survive_action(self):
         """choose respectively Left, Forward and Right action in this order until one allows to survive"""
 
-        initial_dir = self.snake.direction
+        initial_dir = self.snake.direction.copy()
         for action in ["Left", "Forward", "Right"]:
-            self.snake.direction = initial_dir
+            self.snake.direction = initial_dir.copy()
             self.act(action)
             if not self.snake.occupied_box(self.snake.next_box()):
                 break
 
-        self.snake.direction = initial_dir
+        self.snake.direction = initial_dir.copy()
         return action
-
-    def start(self):
-        self.snake: Snake = Snake(self.grid)
-        self.apple = self.apple_spawn()
-        pyg.init()
-        self.screen = pyg.display.set_mode((self.grid.x * self.grid.scale, self.grid.y * self.grid.scale))
-        pyg.display.set_caption("Snake")
-        self.draw()
 
     def play(self):
         """

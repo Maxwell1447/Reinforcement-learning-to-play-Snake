@@ -98,7 +98,6 @@ class Snake:
 
         return False
 
-
     def length(self):
         """
         :return: the length of the body
