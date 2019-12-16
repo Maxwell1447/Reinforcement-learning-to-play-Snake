@@ -21,6 +21,9 @@ class Grid:
         self.y = y
         self.scale = scale
 
+    def is_in(self, x, y):
+        return (0 <= x < self.x) and (0 <= y < self.y)
+
 
 class Snake:
     """
