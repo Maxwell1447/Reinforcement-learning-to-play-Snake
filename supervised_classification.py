@@ -8,21 +8,23 @@ from env.ai_game_env import *
 from snake import *
 import supervised.pick_clf as pick_clf
 import supervised.preprocess_and_accuracy as preprocess_and_accuracy
-import env.ai_classification as ai_classification
+from env.classifier_env import ClassifierEnv
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--mode', choices=['train', 'test'], default='test')
+parser.add_argument('--mode', choices=['feed', 'train-test'], default='train-test')
+parser.add_argument('--no_feed_data', action='store_true', default=False)
+parser.add_argument('--epoch', type=int, default=1)
 parser.add_argument('--clf', choices=['logreg', 'kNN', 'SVM', 'Nusvm', 'MLP'], default='logreg')
-parser.add_argument('--all_data', type=bool, default=False)
+parser.add_argument('--all_data', action='store_true', default=False)
 parser.add_argument('--grid', type=int, default=20)
-parser.add_argument('--poly_features', type=bool, default=False)
-parser.add_argument('--predict_and_test', type=bool, default=True)
+parser.add_argument('--poly_features', action='store_true', default=False)
+parser.add_argument('--predict_and_test', action='store_true', default=False)
 parser.add_argument('--n_neighbor', type=int, default=20)
 parser.add_argument('--path_finder', choices=['greedy', 'a_star'], default='greedy')
 
 args = parser.parse_args()
 
-if args.mode == 'train':
+if args.mode == 'feed':
     grid = Grid(args.grid, args.grid, 30)
     if args.path_finder == "greedy":
         env = GreedyEnv(grid)
@@ -30,9 +32,10 @@ if args.mode == 'train':
         env = AStarEnv(grid)
     else:
         raise ValueError("wrong pathfinder arg")
-    env.play()
+    for i in range(args.epoch):
+        env.play(data_feeding=not args.no_feed_data, wait=not bool(i))
 
-if args.mode == 'test':
+if args.mode == 'train-test':
     clf = pick_clf.pick_clf(args.clf, args.n_neighbor)
     datapath = "data\\data_{}_{}.csv".format(args.path_finder, args.grid)
 
@@ -59,5 +62,7 @@ if args.mode == 'test':
 
     grid = Grid(args.grid, args.grid, 30)
 
-    ai_class = ai_classification.ai_classification(grid, clf, args.all_data, args.poly_features)
-    ai_class.play()
+    ai_class = ClassifierEnv(grid, clf, args.all_data, args.poly_features)
+    steps, score = ai_class.play()
+    print("steps = ", steps)
+    print("apple score = ", score)

@@ -1,3 +1,5 @@
+import os
+
 from env.game_env import GameEnv
 from pygame.locals import *
 import pygame as pyg
@@ -71,7 +73,7 @@ class DataEnv(GameEnv):
         self.snake.direction = initial_dir.copy()
         return action
 
-    def play(self):
+    def play(self, data_feeding=True, wait=True):
         """
         function to be called to launch a game as a human
         """
@@ -79,8 +81,7 @@ class DataEnv(GameEnv):
 
         clock = pyg.time.Clock()
 
-        starting = False
-        while not starting:
+        while wait:
 
             for event in pyg.event.get():
                 if event.type == QUIT:
@@ -88,25 +89,30 @@ class DataEnv(GameEnv):
                     sys.exit("Quit game")
 
                 if event.type == KEYDOWN:
-                    starting = True
+                    wait = False
 
         while True:
+            for event in pyg.event.get():
+                if event.type == QUIT:
+                    pyg.quit()
+                    sys.exit("Quit game")
 
             if self.FPS > 0:
                 clock.tick(self.FPS)  # FPS --> speed of the game for a human user
 
             # path  finder
             action = self.choose_action()
-            self.act(action)
+            self.act(action, data_feeding)
 
             if self.snake.next_box() == self.apple:
                 # We need to make the snake grow before moving to the apple
                 # Otherwise the growth appears with a delay on the screen
                 # This is due to the implementation of the growth --> see Snake.grow()
                 self.snake.grow()
+                self.snake.move()
                 self.apple = self.apple_spawn()  # spawn a new apple
-
-            self.snake.move()
+            else:
+                self.snake.move()
 
             if self.snake.check_death():  # if it dies, we need to go outside
                 break
@@ -114,6 +120,7 @@ class DataEnv(GameEnv):
             # update the graphic elements
             self.draw()
         print("Game Over")
-        self.tab.iloc[:len(self.tab) - 10].to_csv('./data/data_{}_{}.csv'.format(self.name, self.grid.x),
-                                                  mode='a', header=False)
+        path = './data/data_{}_{}.csv'.format(self.name, self.grid.x)
+        header = not os.path.exists(path)
+        self.tab.iloc[:len(self.tab) - 10].to_csv(path, mode='a', header=header)
         pyg.quit()

@@ -30,7 +30,7 @@ class PlayerEnv(GameEnv):
             else:
                 self.snake.turn_right()
 
-    def play(self):
+    def play(self, wait=True):
         """
             function to be called to launch a game as a human
             """
@@ -39,8 +39,7 @@ class PlayerEnv(GameEnv):
 
         clock = pyg.time.Clock()
 
-        starting = False
-        while not starting:
+        while wait:
 
             for event in pyg.event.get():
                 if event.type == QUIT:
@@ -48,7 +47,7 @@ class PlayerEnv(GameEnv):
                     sys.exit("Quit game")
 
                 if event.type == KEYDOWN:
-                    starting = True
+                    wait = False
 
         while True:
 

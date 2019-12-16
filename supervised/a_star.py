@@ -1,5 +1,6 @@
 from snake import *
 from math import sqrt
+import pygame as pyg
 
 
 class Node:
@@ -29,10 +30,10 @@ class AStar:
 
     def __init__(self, snake: Snake):
         self.snake = snake
-        self.open_list = []
-        self.closed_list = []
         self.start = None
         self.end = None
+        self.open_list = []
+        self.closed_list = []
         self.nodes = [[Node(x, y) for y in range(self.snake.grid.y)] for x in range(self.snake.grid.x)]
 
     """
@@ -56,15 +57,23 @@ class AStar:
     :return a list of coordinates to reach the goal according to the A* algorithm
     """
     def find(self, x_end, y_end):
+
+        self.open_list = []
+        self.closed_list = []
+        self.nodes = [[Node(x, y) for y in range(self.snake.grid.y)] for x in range(self.snake.grid.x)]
+
         self.start = self.nodes[self.snake.head()[0]][self.snake.head()[1]]
         self.end = self.nodes[x_end][y_end]
 
         self.open_list.append(self.start)
 
+        i = 0
         while len(self.open_list) > 0:
+            i += 1
+            pyg.event.get()
             current_node = self.get_min_f_node()
-            self.closed_list.append(current_node)
 
+            self.closed_list.append(current_node)
             if current_node == self.end:
                 path = []
                 current = current_node
@@ -81,11 +90,11 @@ class AStar:
                 if child in self.closed_list:
                     continue
 
-                child.g = current_node.g + 1
-
-                for open_node in self.open_list:
-                    if child == open_node and child.g > open_node.g:
-                        continue
+                if child in self.open_list:
+                    if current_node.g + 1 < child.g:
+                        child.g = current_node.g + 1
+                        child.parent = current_node
+                    continue
 
                 child.parent = current_node
                 self.open_list.append(child)

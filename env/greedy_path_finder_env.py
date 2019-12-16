@@ -29,8 +29,6 @@ class GreedyEnv(DataEnv):
         action = self.overall_direction_action()
 
         if action == "None" or self.predict_death(action):
-            print("Impossible to execute: ", action)
             action = self.survive_action()
 
-        print(action)
         return action
