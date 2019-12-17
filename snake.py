@@ -21,6 +21,9 @@ class Grid:
         self.y = y
         self.scale = scale
 
+    def is_in(self, x, y):
+        return (0 <= x < self.x) and (0 <= y < self.y)
+
 
 class Snake:
     """
@@ -83,11 +86,14 @@ class Snake:
         :return: whether the snake dies or not
         """
         head = self.head()
-        if head in self.body[:-1]:  # the head collides with the rest of the body
+        return self.occupied_box(head)
+
+    def occupied_box(self, coord):
+        if coord in self.body[:-1]:  # the head collides with the rest of the body
             return True
 
-        if head[0] < 0 or head[1] < 0 \
-                or head[0] >= self.grid.x or head[1] >= self.grid.y:  # out of the edge of the grid
+        if coord[0] < 0 or coord[1] < 0 \
+                or coord[0] >= self.grid.x or coord[1] >= self.grid.y:  # out of the edge of the grid
             return True
 
         return False
