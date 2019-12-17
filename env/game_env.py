@@ -10,7 +10,7 @@ class GameEnv:
 
     def __init__(self, grid: Grid):
         self.grid = grid
-        self.snake = None
+        self.snake = Snake(self.grid)
         self.apple = None
         self.screen = None
         self.FPS = 10
@@ -87,7 +87,7 @@ class GameEnv:
         # updates the screen --> not necessary for the reinforcement learning
         pyg.display.flip()
 
-    def play(self):
+    def play(self, wait=True):
         """
             function to be called to launch a game as a human
             """
@@ -96,8 +96,7 @@ class GameEnv:
 
         clock = pyg.time.Clock()
 
-        starting = False
-        while not starting:
+        while wait:
 
             for event in pyg.event.get():
                 if event.type == QUIT:
@@ -105,7 +104,7 @@ class GameEnv:
                     sys.exit("Quit game")
 
                 if event.type == KEYDOWN:
-                    starting = True
+                    wait = False
 
         while True:
             
@@ -138,9 +137,11 @@ class GameEnv:
                 # Otherwise the growth appears with a delay on the screen
                 # This is due to the implementation of the growth --> see Snake.grow()
                 self.snake.grow()
+                self.snake.move()
                 self.apple = self.apple_spawn()  # spawn a new apple
-
-            self.snake.move()
+                self.apple_score += 1
+            else:
+                self.snake.move()
 
             if self.snake.check_death():  # if it dies, we need to go outside
                 break
