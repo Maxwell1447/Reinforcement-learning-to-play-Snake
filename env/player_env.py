@@ -20,9 +20,9 @@ class PlayerEnv(GameEnv):
 
     def keyboard_action(self, i_dir):
         """
-            Modifies the direction of the snake according to the key pressed by the human player
-            :param i_dir: the direction chosen by the human player. This is a [dx, dy] like list.
-            """
+        Modifies the direction of the snake according to the key pressed by the human player
+        :param i_dir: the direction chosen by the human player. This is a [dx, dy] like list.
+        """
         dir_ = self.snake.direction
         if dir_[0] * i_dir[0] + dir_[1] * i_dir[1] == 0:
             if dir_[0] * i_dir[1] - dir_[1] * i_dir[0] < 0:
@@ -32,8 +32,8 @@ class PlayerEnv(GameEnv):
 
     def play(self, wait=True):
         """
-            function to be called to launch a game as a human
-            """
+        function to be called to launch a game as a human
+        """
 
         self.start()
 
@@ -86,6 +86,7 @@ class PlayerEnv(GameEnv):
             if self.snake.check_death():  # if it dies, we need to go outside
                 break
 
+            self.step_num += 1
             # update the graphic elements
             self.draw()
         print("Game Over")

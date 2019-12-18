@@ -105,8 +105,10 @@ class ClassifierEnv(GameEnv):
             if self.snake.check_death():  # if it dies, we need to go outside
                 break
 
+            self.step_num += 1
             # update the graphic elements
             self.draw()
         print("Game Over")
         pyg.quit()
+
         return self.step_num, self.apple_score
