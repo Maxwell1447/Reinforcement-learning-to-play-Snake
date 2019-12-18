@@ -22,7 +22,7 @@ def fit_kNN(n_neighbor):
 
 def fit_SVM():
     """
-    Wraps initialization of Logistic regression
+    Wraps initialization of Support Vector Machines
     """
     clf = LinearSVC(random_state=0, dual=False, tol=1e-5, verbose=True, max_iter=100)
     return clf
@@ -30,7 +30,7 @@ def fit_SVM():
 
 def fit_NuSVM():
     """
-    Wraps initialization of Logistic regression
+    Wraps initialization of Support Vector Machines with Kernel
     """
     clf = NuSVC(kernel='rbf', random_state=0, gamma='auto', verbose=True, tol=1e-5)
     return clf
@@ -38,7 +38,7 @@ def fit_NuSVM():
 
 def fit_MLP():
     """
-    Wraps initialization of Logistic regression
+    Wraps initialization of Multi-layer Perceptron
     """
     clf = MLPClassifier(activation='relu', solver='adam', max_iter=1000, verbose=True, tol=1e-5)
     return clf
