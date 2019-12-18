@@ -7,7 +7,7 @@ import numpy as np
 
 
 DEATH_REWARD = -100
-APPLE_REWARD = 100
+APPLE_REWARD = 50
 STEP_REWARD = -1
 
 
@@ -33,7 +33,7 @@ class IAGameEnv(Env, GameEnv):
         self.reset()
 
     def step(self, action_number):
-
+        pyg.event.get()
         if self.FPS > 0:
             self.clock.tick(self.FPS)
 

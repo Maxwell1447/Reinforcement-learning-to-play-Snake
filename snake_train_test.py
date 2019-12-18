@@ -33,19 +33,19 @@ if args.mode == 'test':
 
     dqn.load_weights(weights_filename)
     env.set_fps(20)
-    dqn.test(env, nb_episodes=10, nb_max_episode_steps=500, visualize=True, verbose=3)
+    dqn.test(env, nb_episodes=args.episodes, nb_max_episode_steps=10000, visualize=True, verbose=3)
 
 elif args.mode == 'train':
     if args.weights:
         weights_filename = "data\\"+args.weights
     else:
-        weights_filename = 'data\\dqn_snake_weights_{}_{}.h5f'.format(args.version, args.retrain - 1)
+        weights_filename = 'data\\dqn_snake_weights_{}_{}.h5f'.format(args.version, args.retrain)
     try:
         dqn.load_weights(weights_filename)
     except OSError:
         pass
 
-    new_weights_filename = 'data\\dqn_snake_weights_{}_{}.h5f'.format(args.version, args.retrain)
+    new_weights_filename = 'data\\dqn_snake_weights_{}_{}.h5f'.format(args.version, args.retrain+1)
     new_checkpoint_weights_filename = 'data\\dqn_snake_weights_{}_{}.h5f'.format(args.version, "{step}")
     log_filename = 'data\\dqn_snake_log.json'
     callbacks = [ModelIntervalCheckpoint(new_checkpoint_weights_filename, interval=250000)]
