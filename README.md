@@ -22,6 +22,8 @@ venv\Scripts\pip install -r requirements.txt
 
 Make sure your run python scripts in this virtual env then.
 
+***
+
 ### Run supervised methods
 
 You can either run and test different models on already-built datasets, or you can create your own dataset.
@@ -38,7 +40,7 @@ You can keep on feeding the same data set with the same command. You can freely 
 
 #### Fit a model to an existing dataset
 
-Run
+Run the following command in a terminal:
 ```
 python supervised_classification.py --mode train-test --grid <size of the grid> --path_finder <greedy || a_star> [--poly_features] [--predict_and_test] [--all_data] --clf <model> [--n_neighbor <kNN tolerance>]
 ```
@@ -53,20 +55,31 @@ This will access the dataset file with the corresponding pathfinder and grid siz
 
 There is a bunch of models that are proposed by *Scilit Learn*. Here is a list of the classifier you can use
 
-+ *Logistic regression*
++ **Logistic regression**
+
 use ```--clf logreg```
 
-+ *SVM*
++ **SVM**
+
 use ```--clf SVM```
 
-+ *SVM with RBF kernel*
++ **SVM with RBF kernel**
+
 use ```--clf Nusvm```
 
-+ *k-Nearest Neighbors*
++ **k-Nearest Neighbors**
+
 use ```--clf kNN [--n_neighbor <Number of allowed neighbors>]```
 
-+ *MLP*
++ **MLP**
+
 use ```--clf MLP```
+
++ **One vs Rest with SVM + kernel**
+
+use ```--clf MLP```
+
+***
 
 ### Run Deep Q Reinforcement learning
 
@@ -74,7 +87,7 @@ There are already trained networks that you can test, but you can also run the t
 
 #### Train a model
 
-Run
+Run the following command in a terminal:
 ```
 python snake_train_test.py --mode train --version <model version> [--retrain <training number>] --step <number of step> [--initial_eps <eps value>] [--weights <file name>]
 ```
@@ -94,4 +107,34 @@ By defalut the training number is set to -1 so that the first file is number 0, 
 
 #### Add a costum model <a name="custom"></a>
 
+Open and edit the file use ```dqn\models.py```
+
+Create a new function and fill it, given the other models as templates.
+```python
+def model_custom(input_shape, nb_actions): # you can choose any other name
+  ...
+```
+
+then edit the ```model``` function by adding:
+```python
+elif version == "custom_name": # choose the name you want
+  return model_custom(input_shape, nb_actions)
+```
+
+Now you just have to call ```--version custom_name``` to use this model.
+
+#### Test a model
+
+Run the following command in a terminal:
+```
+python snake_train_test.py --mode test --version <model version> [--retrain <training number>] [--weights <file name>] --episodes <number of games>
+```
+
++ Use a version and a training number corresponding to an existing .hf5 file.
+
++ With ```--weights <file name>``` you can use a custom file name for testing. But make sure it is corresponding to the right model version!
+
++ ```--episodes <number of games>``` corresponds to the number of games that will be played.
+
+***
 
