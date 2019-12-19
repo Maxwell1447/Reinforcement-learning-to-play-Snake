@@ -53,7 +53,7 @@ This will access the dataset file with the corresponding pathfinder and grid siz
 + ```--all_data``` allows to take into account the tail of the snake. Otherwise, there are only info about the head, the apple and the current direction. You will note that not considering the tail provides better results most of the time.
 
 
-There is a bunch of models that are proposed by *Scilit Learn*. Here is a list of the classifier you can use
+There is a bunch of models that are proposed by *Scikit Learn*. Here is a list of the classifier you can use
 
 + **Logistic regression**
 
@@ -77,7 +77,7 @@ use ```--clf MLP```
 
 + **One vs Rest with SVM + kernel**
 
-use ```--clf MLP```
+use ```--clf multiclass```
 
 ***
 
