@@ -16,7 +16,7 @@ input_shape = (WINDOW_LENGTH,) + INPUT_SHAPE
 parser = argparse.ArgumentParser()
 parser.add_argument('--mode', choices=['train', 'test'], default='train')
 parser.add_argument('--weights', type=str, default=None)
-parser.add_argument('--retrain', type=int, default=0)
+parser.add_argument('--retrain', type=int, default=-1)
 parser.add_argument('--step', type=int, default=0)
 parser.add_argument('--episodes', type=int, default=5)
 parser.add_argument('--initial_eps', type=float, default=0.3)

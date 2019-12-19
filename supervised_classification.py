@@ -13,7 +13,7 @@ from env.classifier_env import ClassifierEnv
 parser = argparse.ArgumentParser()
 parser.add_argument('--mode', choices=['feed', 'train-test'], default='train-test')
 parser.add_argument('--no_feed_data', action='store_true', default=False)
-parser.add_argument('--epoch', type=int, default=1)
+parser.add_argument('--episode', type=int, default=1)
 parser.add_argument('--clf', choices=['logreg', 'kNN', 'SVM', 'Nusvm', 'MLP'], default='logreg')
 parser.add_argument('--all_data', action='store_true', default=False)
 parser.add_argument('--grid', type=int, default=20)
@@ -32,7 +32,7 @@ if args.mode == 'feed':
         env = AStarEnv(grid)
     else:
         raise ValueError("wrong pathfinder arg")
-    for i in range(args.epoch):
+    for i in range(args.episode):
         env.play(data_feeding=not args.no_feed_data, wait=not bool(i))
 
 if args.mode == 'train-test':
