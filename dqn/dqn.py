@@ -31,9 +31,9 @@ class DQNSnake(DQNAgent):
         # the agent initially explores the environment (high eps) and then gradually sticks to what it knows
         # (low eps). We also set a dedicated eps value that is used during testing. Note that we set it to 0.05
         # so that the agent still performs some random actions. This ensures that the agent cannot get stuck.
-        policy = LinearAnnealedPolicy(EpsGreedyQPolicy(), attr='eps', value_max=initial_eps, value_min=.05,
+        policy = LinearAnnealedPolicy(EpsGreedyQPolicy(), attr='eps', value_max=initial_eps, value_min=.01,
                                       value_test=0.,
-                                      nb_steps=1000000)
+                                      nb_steps=2000000)
 
         # policy = BoltzmannQPolicy(tau=100)
         test_policy = MaxwellQPolicy(tau=1., eps=.05)
