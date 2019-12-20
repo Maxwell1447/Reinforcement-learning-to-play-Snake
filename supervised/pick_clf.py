@@ -1,10 +1,11 @@
 from sklearn.linear_model import LogisticRegression
 from sklearn import neighbors
-from sklearn.svm import LinearSVC, NuSVC
+from sklearn.multiclass import OneVsRestClassifier
+from sklearn.svm import LinearSVC, NuSVC, SVC
 from sklearn.neural_network import MLPClassifier
 
 
-def fit_logreg():
+def logreg():
     """
     Wraps initialization of Logistic regression
     """
@@ -12,7 +13,7 @@ def fit_logreg():
     return logreg
 
 
-def fit_kNN(n_neighbor):
+def kNN(n_neighbor):
     """
     We create an instance of Neighbours Classifier
     """
@@ -20,7 +21,7 @@ def fit_kNN(n_neighbor):
     return clf
 
 
-def fit_SVM():
+def SVM():
     """
     Wraps initialization of Logistic regression
     """
@@ -28,7 +29,7 @@ def fit_SVM():
     return clf
 
 
-def fit_NuSVM():
+def NuSVM():
     """
     Wraps initialization of Logistic regression
     """
@@ -36,7 +37,7 @@ def fit_NuSVM():
     return clf
 
 
-def fit_MLP():
+def MLP():
     """
     Wraps initialization of Logistic regression
     """
@@ -46,15 +47,17 @@ def fit_MLP():
 
 def pick_clf(clf_name, n):
     if clf_name == 'logreg':
-        clf = fit_logreg()
+        clf = logreg()
     elif clf_name == 'kNN':
-        clf = fit_kNN(n)
+        clf = kNN(n)
     elif clf_name == 'SVM':
-        clf = fit_SVM()
+        clf = SVM()
     elif clf_name == 'Nusvm':
-        clf = fit_NuSVM()
+        clf = NuSVM()
     elif clf_name == 'MLP':
-        clf = fit_MLP()
+        clf = MLP()
+    elif clf_name == 'multiclass':
+        clf = OneVsRestClassifier(SVC(gamma='auto', verbose=True))
     else:
         raise ValueError("Wrong classifier name")
     return clf
