@@ -4,6 +4,7 @@ from env.ai_game_env import *
 from snake import *
 from rl.callbacks import FileLogger, ModelIntervalCheckpoint
 from dqn.dqn import DQNSnake
+from dqn.stat_process import stat_process
 
 
 grid = Grid(10, 10, 10)
@@ -21,6 +22,7 @@ parser.add_argument('--step', type=int, default=0)
 parser.add_argument('--episodes', type=int, default=5)
 parser.add_argument('--initial_eps', type=float, default=0.3)
 parser.add_argument('--version', type=str, default="v1")
+parser.add_argument('--FPS', type=int, default=25)
 args = parser.parse_args()
 
 dqn = DQNSnake(env, input_shape, args.version, args.initial_eps)
@@ -32,8 +34,9 @@ if args.mode == 'test':
         weights_filename = 'data\\dqn_snake_weights_{}_{}.h5f'.format(args.version, args.retrain)
 
     dqn.load_weights(weights_filename)
-    env.set_fps(20)
-    dqn.test(env, nb_episodes=args.episodes, nb_max_episode_steps=10000, visualize=True, verbose=3)
+    env.set_fps(args.FPS)
+    history = dqn.test(env, nb_episodes=args.episodes, nb_max_episode_steps=10000, visualize=True, verbose=3)
+    stat_process(history)
 
 elif args.mode == 'train':
     if args.weights:
