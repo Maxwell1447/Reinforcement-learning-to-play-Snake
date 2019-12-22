@@ -11,9 +11,9 @@ class SnakeProcessor(Processor):
         self.input_shape = input_shape
 
     def process_observation(self, observation):
-        assert observation.ndim == 3  # (height, width, channel)
+        assert observation.ndim == 2  # (height, width)
         img = Image.fromarray(observation)
-        img = img.resize(self.input_shape).convert('L')  # resize and convert to grayscale
+        img = img.resize(self.input_shape)  # resize and convert to grayscale
         processed_observation = np.array(img)
         assert processed_observation.shape == self.input_shape
         return processed_observation.astype('uint8')  # saves storage in experience memory

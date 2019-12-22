@@ -3,6 +3,8 @@ from gym import spaces
 from env.game_env import GameEnv
 from snake import *
 import pygame as pyg
+from pygame.locals import *
+import sys
 import numpy as np
 
 
@@ -33,7 +35,11 @@ class IAGameEnv(Env, GameEnv):
         self.reset()
 
     def step(self, action_number):
-        pyg.event.get()
+        events = pyg.event.get()
+        for event in events:
+            if event.type == QUIT:
+                pyg.quit()
+                sys.exit("Quit game")
         if self.FPS > 0:
             self.clock.tick(self.FPS)
 
@@ -63,11 +69,31 @@ class IAGameEnv(Env, GameEnv):
     def render(self, mode='human', close=False):
         self.draw()
 
-    def observation(self):
+    def observation_(self):
 
         pxl_array = np.array(pyg.PixelArray(self.screen), dtype=np.uint8)
         # return self.hex_to_rgb(pxl_array)
         return np.stack(self.hex_to_rgb(pxl_array), axis=2)
+
+    def observation(self):
+
+        state = np.zeros(self.grid.shape())
+
+        for box in self.snake.body:
+            try:
+                state[box[0], box[1]] = 256 * 2 / 3
+            except IndexError:
+                pass
+
+        head = self.snake.head()
+        try:
+            state[head[0], head[1]] = 255
+        except IndexError:
+            pass
+
+        state[self.apple[0], self.apple[1]] = 256 * 1 / 3
+
+        return state
 
     def set_fps(self, fps: int):
         if fps > 0:

@@ -148,7 +148,6 @@ class GameEnv:
 
             self.step_num += 1
             # update the graphic elements
-            self.draw()
         print("Game Over")
         pyg.quit()
 
