@@ -2,7 +2,7 @@
 
 ## How to run locally
 
-clone the repository in a floder
+clone the repository in a folder
 
 ```
 git clone https://github.com/Maxwell1447/Reinforcement-learning-to-play-Snake.git
