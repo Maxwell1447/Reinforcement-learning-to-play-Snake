@@ -16,20 +16,24 @@ class GameEnv:
         self.FPS = 10
         self.apple_score = 0
         self.step_num = 0
+        self.visualize = False
 
     def start(self):
         self.snake = Snake(self.grid)
         self.apple = self.apple_spawn()
+        self.apple_score = 0
+        self.step_num = 0
+        if self.visualize:
+            self.pygame_init()
+
+    def pygame_init(self):
         pyg.init()
         self.screen = pyg.display.set_mode((self.grid.x * self.grid.scale, self.grid.y * self.grid.scale))
         pyg.display.set_caption("Snake")
         on_top(pyg.display.get_wm_info()['window'])
-        self.draw()
-        self.apple_score = 0
-        self.step_num = 0
         
     def set_FPS(self, fps):
-        if fps>0:
+        if fps > 0:
             self.FPS = fps
         else:
             self.FPS = -1
@@ -147,7 +151,6 @@ class GameEnv:
                 break
 
             self.step_num += 1
-            # update the graphic elements
         print("Game Over")
         pyg.quit()
 

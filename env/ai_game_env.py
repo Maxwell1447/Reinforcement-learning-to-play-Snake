@@ -35,11 +35,15 @@ class IAGameEnv(Env, GameEnv):
         self.reset()
 
     def step(self, action_number):
-        events = pyg.event.get()
-        for event in events:
-            if event.type == QUIT:
-                pyg.quit()
-                sys.exit("Quit game")
+        try:
+            events = pyg.event.get()
+            for event in events:
+                if event.type == QUIT:
+                    pyg.quit()
+                    sys.exit("Quit game")
+        except pyg.error:
+            pass
+
         if self.FPS > 0:
             self.clock.tick(self.FPS)
 
@@ -55,11 +59,9 @@ class IAGameEnv(Env, GameEnv):
             self.snake.grow()
             self.apple = self.apple_spawn()  # spawn a new apple
             self.snake.move()
-            self.render()
             return self.observation(), APPLE_REWARD, False, {}
 
         self.snake.move()
-        self.render()
         return self.observation(), STEP_REWARD, False, {}
 
     def reset(self):

@@ -31,7 +31,7 @@ class DQNSnake(DQNAgent):
         # the agent initially explores the environment (high eps) and then gradually sticks to what it knows
         # (low eps). We also set a dedicated eps value that is used during testing. Note that we set it to 0.05
         # so that the agent still performs some random actions. This ensures that the agent cannot get stuck.
-        policy = LinearAnnealedPolicy(EpsGreedyQPolicy(), attr='eps', value_max=initial_eps, value_min=.01,
+        policy = LinearAnnealedPolicy(EpsGreedyQPolicy(), attr='eps', value_max=initial_eps, value_min=.02,
                                       value_test=0.,
                                       nb_steps=2000000)
 
@@ -48,3 +48,9 @@ class DQNSnake(DQNAgent):
                                        target_model_update=10000,
                                        train_interval=4, delta_clip=1., test_policy=test_policy)
         self.compile(Adam(lr=.00025), metrics=['mae'])
+
+    def test(self, env: IAGameEnv, nb_episodes=1, action_repetition=1, callbacks=None, visualize=True,
+             nb_max_episode_steps=None, nb_max_start_steps=0, start_step_policy=None, verbose=1):
+        env.visualize = True
+        super().test(env, nb_episodes, action_repetition, callbacks, visualize, nb_max_episode_steps,
+                     nb_max_start_steps, start_step_policy, verbose)
