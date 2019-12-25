@@ -50,7 +50,7 @@ elif args.mode == 'train':
 
     new_weights_filename = 'data\\dqn_snake_weights_{}_{}.h5f'.format(args.version, args.retrain+1)
     new_checkpoint_weights_filename = 'data\\dqn_snake_weights_{}_{}.h5f'.format(args.version, "{step}")
-    log_filename = 'data\\dqn_snake_log.json'
+    log_filename = 'data\\dqn_snake_log_{}_{}.json'.format(args.version, args.retrain+1)
     callbacks = [ModelIntervalCheckpoint(new_checkpoint_weights_filename, interval=250000)]
     callbacks += [FileLogger(log_filename, interval=100)]
 
