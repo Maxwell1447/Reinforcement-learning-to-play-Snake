@@ -2,7 +2,10 @@ from keras.callbacks import History
 import numpy as np
 
 
-def stat_process(history: History):
+def stat_process(history):
+
+    if history is None:
+        return
 
     rewards = np.array(history.history["episode_reward"])
     steps = np.array(history.history["nb_steps"])
