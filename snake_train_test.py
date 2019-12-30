@@ -65,7 +65,7 @@ elif args.mode == 'train':
 
 elif args.mode == 'stats':
     done = False
-    retrain = args.retrain + 1
+    retrain = max(0, args.retrain)
     infos = []
     while not done:
         log_filename = 'data\\dqn_snake_log_{}_{}.json'.format(args.version, retrain)
@@ -77,10 +77,13 @@ elif args.mode == 'stats':
             done = True
     # 'loss', 'mae', 'mean_q', 'mean_eps', 'episode_reward', 'nb_episode_steps', 'nb_steps', 'episode', 'duration'
 
-    for info in infos:
-        # plt.plot(info['episode'], smooth(info['episode_reward']))
+    legends = []
+    for i, info in enumerate(infos):
+        plt.plot(info['episode'], smooth(info['episode_reward']))
+        legends.append("retrain {}".format(i))
         # plt.plot(info['episode'], smooth(info['loss']))
         # plt.plot(info['episode'], smooth(info['mae']))
-        plt.plot(info['episode'], smooth(info['nb_episode_steps']))
+        # plt.plot(info['episode'], smooth(info['nb_episode_steps']))
+    plt.legend(legends)
 
     plt.show()
