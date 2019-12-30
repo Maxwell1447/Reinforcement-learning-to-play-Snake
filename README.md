@@ -8,7 +8,9 @@ clone the repository in a folder
 git clone https://github.com/Maxwell1447/Reinforcement-learning-to-play-Snake.git
 ```
 
-create a python virtual env in the cloned repository (if you run it on Windows, make sure python is referenced in you environnement variables. More info on [this page](https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/))
+create and activate a python virtual env in the cloned repository (if you run it on Windows, make sure python is referenced in you environnement variables. More info on [this page](https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/))
+
+Make sure your run python scripts in this virtual env then.
 
 ```
 python -m venv venv . venv/bin/activate
@@ -17,10 +19,8 @@ python -m venv venv . venv/bin/activate
 install requirements (make sure that pip is upgraded to version 19 or higher)
 
 ```
-venv\Scripts\pip install -r requirements.txt
+pip install -r requirements.txt
 ```
-
-Make sure your run python scripts in this virtual env then.
 
 ***
 
