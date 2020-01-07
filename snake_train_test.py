@@ -39,7 +39,6 @@ if args.mode == 'test':
     env.set_fps(args.FPS)
     history = dqn.test(env, nb_episodes=args.episodes, nb_max_episode_steps=10000, visualize=True, verbose=3)
     stat_process(history)
-    print(dqn.metrics_names)
 
 elif args.mode == 'train':
     dqn = DQNSnake(env, input_shape, args.version, args.initial_eps)

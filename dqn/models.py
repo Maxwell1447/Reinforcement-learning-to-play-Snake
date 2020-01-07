@@ -43,7 +43,6 @@ def model_v1(input_shape, nb_actions):
 
 
 def model_v2(input_shape, nb_actions):
-
     model = Sequential()
     if common.image_dim_ordering() == 'tf':
         # (width, height, channels)
@@ -53,19 +52,16 @@ def model_v2(input_shape, nb_actions):
         model.add(Permute((1, 2, 3), input_shape=input_shape))
     else:
         raise RuntimeError('Unknown image_dim_ordering.')
-    model.add(Convolution2D(32, (5, 5), strides=(3, 3)))
-    model.add(Activation('relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Convolution2D(64, (3, 3), strides=(2, 2)))
+    model.add(Convolution2D(4, (5, 5), strides=(1, 1)))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Flatten())
-    model.add(Dense(512))
+    model.add(Dense(200))
     model.add(Activation('relu'))
-    model.add(Dense(150))
+    model.add(Dense(40))
     model.add(Activation('relu'))
     model.add(Dense(nb_actions))
-    # model.add(Activation('linear'))
+    model.add(Activation('linear'))
     print(model.summary())
 
     return model

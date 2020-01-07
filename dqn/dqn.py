@@ -52,5 +52,5 @@ class DQNSnake(DQNAgent):
     def test(self, env: IAGameEnv, nb_episodes=1, action_repetition=1, callbacks=None, visualize=True,
              nb_max_episode_steps=None, nb_max_start_steps=0, start_step_policy=None, verbose=1):
         env.visualize = True
-        super().test(env, nb_episodes, action_repetition, callbacks, visualize, nb_max_episode_steps,
-                     nb_max_start_steps, start_step_policy, verbose)
+        return super().test(env, nb_episodes, action_repetition, callbacks, visualize, nb_max_episode_steps,
+                            nb_max_start_steps, start_step_policy, verbose)
