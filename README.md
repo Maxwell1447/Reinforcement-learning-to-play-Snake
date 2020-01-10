@@ -1,5 +1,7 @@
 # Comparing different techniques of Machine Learning to play Snake
 
+![](res/v3.gif)
+
 ## How to run locally
 
 Clone the repository in a folder
