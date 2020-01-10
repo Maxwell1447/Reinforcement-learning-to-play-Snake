@@ -2,21 +2,43 @@
 
 ## How to run locally
 
-clone the repository in a folder
+Clone the repository in a folder
 
 ```
 git clone https://github.com/Maxwell1447/Reinforcement-learning-to-play-Snake.git
 ```
 
-create and activate a python virtual env in the cloned repository (if you run it on Windows, make sure python is referenced in you environnement variables. More info on [this page](https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/))
+<span style="color:red">**Warning**</span>
 
-Make sure your run python scripts in this virtual env then.
+You have to use a version of python 3.7 maximum. Python 3.8 or more is incompatible with this code!
+
+If you are using Windows, make sure python and its Script folder are referenced in you environnement variables. More info on [this page](https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/).
+
+Run this command in a terminal in the cloned repository to create the virtual environnement (note that you must use the command prompt in Windows):
 
 ```
-python -m venv venv . venv/bin/activate
+virtualenv venv
 ```
 
-install requirements (make sure that pip is upgraded to version 19 or higher)
+Activate it on Windows by running this command then:
+
+```
+venv\Scripts\activate
+```
+
+For Linux/Mac OS, this is this command instead:
+
+```
+source venv/bin/activate
+```
+
+Don't forget that when you're done, you have to unactivate it:
+
+```
+deactivate
+```
+
+Install requirements (make sure that pip is upgraded to version 19 or higher)
 
 ```
 pip install -r requirements.txt
