@@ -24,6 +24,10 @@ class Grid:
     def is_in(self, x, y):
         return (0 <= x < self.x) and (0 <= y < self.y)
 
+    def shape(self):
+
+        return self.x, self.y
+
 
 class Snake:
     """
