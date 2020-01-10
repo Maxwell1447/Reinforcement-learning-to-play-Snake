@@ -8,9 +8,7 @@ Clone the repository in a folder
 git clone https://github.com/Maxwell1447/Reinforcement-learning-to-play-Snake.git
 ```
 
-<span style="color:red">**Warning**</span>
-
-You have to use a version of python 3.7 maximum. Python 3.8 or more is incompatible with this code!
+***Warning***: You have to use a version of python up to 3.7. Python 3.8 or more is incompatible with this code!
 
 If you are using Windows, make sure python and its Script folder are referenced in you environnement variables. More info on [this page](https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/).
 
@@ -37,6 +35,8 @@ Don't forget that when you're done, you have to unactivate it:
 ```
 deactivate
 ```
+
+All the following commands are to be run in this virtual env.
 
 Install requirements (make sure that pip is upgraded to version 19 or higher)
 
