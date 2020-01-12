@@ -16,6 +16,10 @@ class DataEnv(GameEnv):
         self.FPS = -1
         self.name = None
 
+    def start(self):
+        super().start()
+        self.pygame_init()
+
     def update_tab(self, action: str):
         df = pd.DataFrame({'Headx': [self.snake.head()[0]], 'Heady': [self.snake.head()[1]], 'Applex': [self.apple[0]],
                            'Appley': [self.apple[1]]})
@@ -74,9 +78,10 @@ class DataEnv(GameEnv):
         return action
 
     def play(self, data_feeding=True, wait=True):
-        """
-        function to be called to launch a game as a human
-        """
+        """ lauch snake played by a path_finder """
+
+        self.tab = pd.DataFrame()
+        
         self.start()
 
         clock = pyg.time.Clock()
@@ -124,3 +129,6 @@ class DataEnv(GameEnv):
         header = not os.path.exists(path)
         self.tab.iloc[:len(self.tab) - 10].to_csv(path, mode='a', header=header)
         pyg.quit()
+
+
+

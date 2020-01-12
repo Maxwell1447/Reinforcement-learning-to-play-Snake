@@ -1,6 +1,7 @@
 from __future__ import division
 import argparse
 import pandas as pd
+import os
 
 from env.a_star_path_finder_env import AStarEnv
 from env.greedy_path_finder_env import GreedyEnv
@@ -33,6 +34,7 @@ if args.mode == 'feed':
     else:
         raise ValueError("wrong pathfinder arg")
     for i in range(args.episode):
+        print("episode ", i + 1)
         env.play(data_feeding=not args.no_feed_data, wait=not bool(i))
 
 if args.mode == 'train-test':
@@ -61,8 +63,13 @@ if args.mode == 'train-test':
         print('ACC multinomial: ', acc_test)
 
     grid = Grid(args.grid, args.grid, 30)
-
-    ai_class = ClassifierEnv(grid, clf, args.all_data, args.poly_features)
-    steps, score = ai_class.play()
-    print("steps = ", steps)
-    print("apple score = ", score)
+    
+    for i in range(args.episode):
+        ai_class = ClassifierEnv(grid, clf, args.all_data, args.poly_features)
+        steps, score = ai_class.play(wait=not bool(i))
+        print("episode ", i + 1, "steps = ", steps)
+        print("episode ", i + 1, "apple score = ", score)
+        path = '.\\data\\supervised_{}_{}_{}.csv'.format(args.clf, args.grid,args.path_finder)
+        header = not os.path.exists(path)
+        df = pd.DataFrame({'steps': [steps], 'apple_score': [score-1], 'score': [(score-1)*100-steps]})
+        df.to_csv(path, mode='a', header=header, index=False)
