@@ -115,9 +115,11 @@ class DataEnv(GameEnv):
                 # This is due to the implementation of the growth --> see Snake.grow()
                 self.snake.grow()
                 self.snake.move()
+                self.step_num += 1
                 self.apple = self.apple_spawn()  # spawn a new apple
             else:
                 self.snake.move()
+                self.step_num += 1
 
             if self.snake.check_death():  # if it dies, we need to go outside
                 break
