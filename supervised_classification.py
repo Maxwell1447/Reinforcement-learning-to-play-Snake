@@ -17,7 +17,7 @@ parser.add_argument('--mode', choices=['feed', 'train-test'], default='train-tes
 parser.add_argument('--no_feed_data', action='store_true', default=False)
 parser.add_argument('--episode', type=int, default=1)
 parser.add_argument('--clf', choices=['logreg', 'kNN', 'SVM', 'Nusvm', 'MLP', 'Forest', 'multiclass'], default='logreg')
-parser.add_argument('--all_data', action='store_true', default=True)
+parser.add_argument('--all_data', action='store_true', default=False)
 parser.add_argument('--grid', type=int, default=20)
 parser.add_argument('--poly_features', action='store_true', default=False)
 parser.add_argument('--predict_and_test', action='store_true', default=True)
@@ -36,7 +36,9 @@ if args.mode == 'feed':
         raise ValueError("wrong pathfinder arg")
     for i in range(args.episode):
         print("episode ", i + 1)
-        env.play(data_feeding=not args.no_feed_data, wait=not bool(i))
+        steps, score = env.play(data_feeding=not args.no_feed_data, wait=not bool(i))
+        print("steps = ", steps)
+        print("apple score = ", score)
 
 if args.mode == 'train-test':
     clf = pick_clf.pick_clf(args.clf, args.nb_parameter)
@@ -73,7 +75,7 @@ if args.mode == 'train-test':
         print("apple score = ", score)
         path = '.\\data\\supervised_{}.csv'.format(args.clf)
         header = not os.path.exists(path)
-        df = pd.DataFrame({'steps': [steps], 'apple_score': [score-1], 'score': [(score-1)*100-steps], 'size': [args.grid], 
+        df = pd.DataFrame({'steps': [steps], 'apple_score': [score-1], 'score': [(score-1)*50-steps-100], 'size': [args.grid], 
                            'path_finder': [args.path_finder], 'poly_features': [args.poly_features], 'all_data': [args.all_data] })
         if args.clf in ['kNN', 'MLP', 'Forest']:
             df['nb_parameter'] = [args.nb_parameter]

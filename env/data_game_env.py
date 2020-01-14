@@ -127,8 +127,8 @@ class DataEnv(GameEnv):
         print("Game Over")
         path = './data/data_{}_{}.csv'.format(self.name, self.grid.x)
         header = not os.path.exists(path)
-        self.tab.iloc[:len(self.tab) - 10].to_csv(path, mode='a', header=header)
+        #self.tab.iloc[:len(self.tab) - 10].to_csv(path, mode='a', header=header)
         pyg.quit()
 
-
+        return self.step_num, self.apple_score
 

@@ -101,6 +101,10 @@ class ClassifierEnv(GameEnv):
 
             self.snake.move()
             self.step_num += 1
+            
+            if self.step_num >= 1000:
+                print("Infinite loop")
+                break
 
             if self.snake.check_death():  # if it dies, we need to go outside
                 break

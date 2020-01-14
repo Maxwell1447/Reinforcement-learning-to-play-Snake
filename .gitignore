@@ -2,3 +2,7 @@
 venv/
 __pycache__
 .vs/
+
+data/data_greedy_20.csv
+
+data/data_a_star_20.csv

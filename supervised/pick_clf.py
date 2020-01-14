@@ -34,7 +34,7 @@ def NuSVM():
     """
     Wraps initialization of a Nu-Support Vector Classifier
     """
-    clf = NuSVC(kernel='rbf', random_state=0, gamma='auto', verbose=True, tol=1e-5)
+    clf = NuSVC(kernel='rbf', random_state=0, shrinking=0, gamma='auto', verbose=True, tol=1e-5)
     return clf
 
 
@@ -68,7 +68,7 @@ def pick_clf(clf_name, nb_parameter):
     elif clf_name == 'Forest':
         clf = RandomForest(nb_parameter)
     elif clf_name == 'multiclass':
-        clf = OneVsRestClassifier(SVC(gamma='auto', verbose=True))
+        clf = OneVsRestClassifier(SVC(gamma='auto', verbose=True), n_jobs=-1)
     else:
         raise ValueError("Wrong classifier name")
     return clf
