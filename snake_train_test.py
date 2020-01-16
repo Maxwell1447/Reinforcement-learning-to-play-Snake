@@ -15,6 +15,7 @@ parser.add_argument('--mode', choices=['train', 'test', 'stats'], default='train
 parser.add_argument('--weights', type=str, default=None)
 parser.add_argument('--retrain', type=int, default=-1)
 parser.add_argument('--step', type=int, default=0)
+parser.add_argument('--step_size', type=float, default=.00025)
 parser.add_argument('--episodes', type=int, default=5)
 parser.add_argument('--initial_eps', type=float, default=0.3)
 parser.add_argument('--version', type=str, default="v1")
@@ -43,7 +44,7 @@ elif args.mode == 'train':
     from rl.callbacks import FileLogger, ModelIntervalCheckpoint
     from dqn.dqn import DQNSnake
 
-    dqn = DQNSnake(env, input_shape, args.version, args.initial_eps)
+    dqn = DQNSnake(env, input_shape, args.version, args.initial_eps, args.step_size)
     if args.weights:
         weights_filename = "data\\" + args.weights
     else:

@@ -14,9 +14,9 @@ def model(input_shape, nb_actions, version: str):
     elif version == "v4":
         return model_v4(input_shape, nb_actions)
     elif version == "v5":
-        return model_v4(input_shape, nb_actions)
+        return model_v5(input_shape, nb_actions)
     elif version == "v6":
-        return model_v4(input_shape, nb_actions)
+        return model_v6(input_shape, nb_actions)
     else:
         raise ValueError
 
@@ -168,18 +168,18 @@ def model_v6(input_shape, nb_actions):
         model.add(Permute((1, 2, 3), input_shape=input_shape))
     else:
         raise RuntimeError('Unknown image_dim_ordering.')
-    model.add(Convolution2D(10, (4, 4), strides=(1, 1)))
+    model.add(Convolution2D(15, (4, 4), strides=(1, 1)))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Convolution2D(30, (3, 3), strides=(1, 1)))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Flatten())
-    model.add(Dense(100))
+    model.add(Dense(300))
     model.add(Activation('relu'))
-    model.add(Dense(80))
+    model.add(Dense(150))
     model.add(Activation('relu'))
-    model.add(Dense(40))
+    model.add(Dense(60))
     model.add(Activation('relu'))
     model.add(Dense(20))
     model.add(Activation('relu'))

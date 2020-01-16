@@ -11,7 +11,7 @@ from dqn.policy import MaxwellQPolicy
 
 class DQNSnake(DQNAgent):
 
-    def __init__(self, env, input_shape, version, initial_eps):
+    def __init__(self, env, input_shape, version, initial_eps, step_size=.00025):
         # Get the environment and extract the number of actions.
         np.random.seed(123)
         env.seed(123)
@@ -47,7 +47,7 @@ class DQNSnake(DQNAgent):
                                        processor=processor, nb_steps_warmup=50000, gamma=.995,
                                        target_model_update=10000,
                                        train_interval=4, delta_clip=1., test_policy=test_policy)
-        self.compile(Adam(lr=.00025), metrics=['mae'])
+        self.compile(Adam(lr=step_size), metrics=['mae'])
 
     def test(self, env: IAGameEnv, nb_episodes=1, action_repetition=1, callbacks=None, visualize=True,
              nb_max_episode_steps=None, nb_max_start_steps=0, start_step_policy=None, verbose=1):
