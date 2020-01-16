@@ -78,9 +78,10 @@ class DataEnv(GameEnv):
         return action
 
     def play(self, data_feeding=True, wait=True):
-        """
-        function to be called to launch a game as a human
-        """
+        """ lauch snake played by a path_finder """
+
+        self.tab = pd.DataFrame()
+        
         self.start()
 
         clock = pyg.time.Clock()
@@ -114,9 +115,11 @@ class DataEnv(GameEnv):
                 # This is due to the implementation of the growth --> see Snake.grow()
                 self.snake.grow()
                 self.snake.move()
+                self.step_num += 1
                 self.apple = self.apple_spawn()  # spawn a new apple
             else:
                 self.snake.move()
+                self.step_num += 1
 
             if self.snake.check_death():  # if it dies, we need to go outside
                 break
@@ -126,8 +129,8 @@ class DataEnv(GameEnv):
         print("Game Over")
         path = './data/data_{}_{}.csv'.format(self.name, self.grid.x)
         header = not os.path.exists(path)
-        self.tab.iloc[:len(self.tab) - 10].to_csv(path, mode='a', header=header)
+        #self.tab.iloc[:len(self.tab) - 10].to_csv(path, mode='a', header=header)
         pyg.quit()
 
-
+        return self.step_num, self.apple_score
 
