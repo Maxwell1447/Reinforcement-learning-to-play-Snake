@@ -10,7 +10,7 @@ import os
 import matplotlib.pyplot as plt
 from utils import smooth
 
-grid = Grid(10, 10, 10)
+grid = Grid(10, 10, 40)
 env = IAGameEnv(grid)
 
 INPUT_SHAPE = (40, 40)
