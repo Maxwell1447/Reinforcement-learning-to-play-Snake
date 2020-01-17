@@ -19,6 +19,8 @@ def model(input_shape, nb_actions, version: str):
         return model_v6(input_shape, nb_actions)
     elif version == "v7":
         return model_v7(input_shape, nb_actions)
+    elif version == "v8":
+        return model_v8(input_shape, nb_actions)
     else:
         raise ValueError
 
@@ -44,6 +46,7 @@ def model_v1(input_shape, nb_actions):
     model.add(Dense(nb_actions))
     model.add(Activation('linear'))
     print(model.summary())
+    print(model.count_params())
 
     return model
 
@@ -69,6 +72,7 @@ def model_v2(input_shape, nb_actions):
     model.add(Dense(nb_actions))
     model.add(Activation('linear'))
     print(model.summary())
+    print(model.count_params())
 
     return model
 
@@ -123,6 +127,7 @@ def model_v4(input_shape, nb_actions):
     model.add(Dense(nb_actions))
     model.add(Activation('linear'))
     print(model.summary())
+    print(model.count_params())
 
     return model
 
@@ -155,6 +160,7 @@ def model_v5(input_shape, nb_actions):
     model.add(Dense(nb_actions))
     model.add(Activation('linear'))
     print(model.summary())
+    print(model.count_params())
 
     return model
 
@@ -188,6 +194,7 @@ def model_v6(input_shape, nb_actions):
     model.add(Dense(nb_actions))
     model.add(Activation('linear'))
     print(model.summary())
+    print(model.count_params())
 
     return model
 
@@ -218,5 +225,39 @@ def model_v7(input_shape, nb_actions):
     model.add(Dense(nb_actions))
     model.add(Activation('linear'))
     print(model.summary())
+    print(model.count_params())
+
+    return model
+
+
+def model_v8(input_shape, nb_actions):
+
+    model = Sequential()
+    if common.image_dim_ordering() == 'tf':
+        # (width, height, channels)
+        model.add(Permute((2, 3, 1), input_shape=input_shape))
+    elif common.image_dim_ordering() == 'th':
+        # (channels, width, height)
+        model.add(Permute((1, 2, 3), input_shape=input_shape))
+    else:
+        raise RuntimeError('Unknown image_dim_ordering.')
+    model.add(Convolution2D(15, (4, 4), strides=(1, 1)))
+    model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Convolution2D(30, (3, 3), strides=(1, 1)))
+    model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Flatten())
+    model.add(Dense(600))
+    model.add(Activation('relu'))
+    model.add(Dense(300))
+    model.add(Activation('relu'))
+    model.add(Dense(150))
+    model.add(Activation('relu'))
+    model.add(Dense(80))
+    model.add(Dense(nb_actions))
+    model.add(Activation('linear'))
+    print(model.summary())
+    print(model.count_params())
 
     return model
