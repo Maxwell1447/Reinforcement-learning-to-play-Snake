@@ -88,6 +88,8 @@ elif args.mode == 'stats':
     legends = []
     for i, info in enumerate(infos):
         plt.plot(info['episode'], smooth(info[args.display]))
+        plt.xlabel("episode number")
+        plt.ylabel(args.display)
         legends.append("retrain {}".format(i))
     plt.legend(legends)
 
