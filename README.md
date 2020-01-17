@@ -1,6 +1,6 @@
 # Comparing different techniques of Machine Learning to play Snake
 
-![](res/v3.gif)
+![](res/v7.gif)
 
 ## How to run locally
 
