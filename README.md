@@ -1,26 +1,52 @@
 # Comparing different techniques of Machine Learning to play Snake
 
+![](res/v3.gif)
+
 ## How to run locally
 
-clone the repository in a floder
+Clone the repository in a folder
 
 ```
 git clone https://github.com/Maxwell1447/Reinforcement-learning-to-play-Snake.git
 ```
 
-create a python virtual env in the cloned repository (if you run it on Windows, make sure python is referenced in you environnement variables. More info on [this page](https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/))
+***Warning***: You have to use a version of python up to 3.7. Python 3.8 or more is incompatible with this code!
+
+If you are using Windows, make sure python and its Script folder are referenced in you environnement variables. More info on [this page](https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/).
+
+Run this command in a terminal in the cloned repository to create the virtual environnement (note that you must use the command prompt in Windows):
 
 ```
-python -m venv venv . venv/bin/activate
+virtualenv venv
 ```
 
-install requirements (make sure that pip is upgraded to version 19 or higher)
+Activate it on Windows by running this command then:
 
 ```
-venv\Scripts\pip install -r requirements.txt
+venv\Scripts\activate
 ```
 
-Make sure your run python scripts in this virtual env then.
+For Linux/Mac OS, this is this command instead:
+
+```
+source venv/bin/activate
+```
+
+Don't forget that when you're done, you have to unactivate it:
+
+```
+deactivate
+```
+
+All the following commands are to be run in this virtual env.
+
+Install requirements (make sure that pip is upgraded to version 19 or higher)
+
+```
+pip install -r requirements.txt
+```
+
+***
 
 ### Run supervised methods
 
@@ -32,13 +58,13 @@ You can either run and test different models on already-built datasets, or you c
 python supervised_classification.py --mode feed --episode <Number of games> --grid <size of the grid> --path_finder <greedy || a_star>
 ```
 Note that the grid is square. The pathfinder corresponds to the deterministic algorithm chosen to show the example and feed the data.
-In the ```data``` folder, a ```.csv``` file should have been created whith the following name ```data_<pathfinder>_<grid size>.csv```
+In the ```data``` folder, a ```.csv``` file should have been created with the following name format ```data_<pathfinder>_<grid size>.csv```
 
 You can keep on feeding the same data set with the same command. You can freely change the number of episodes then.
 
 #### Fit a model to an existing dataset
 
-Run
+Run the following command in a terminal:
 ```
 python supervised_classification.py --mode train-test --grid <size of the grid> --path_finder <greedy || a_star> [--poly_features] [--predict_and_test] [--all_data] --clf <model> [--n_neighbor <kNN tolerance>]
 ```
@@ -51,22 +77,33 @@ This will access the dataset file with the corresponding pathfinder and grid siz
 + ```--all_data``` allows to take into account the tail of the snake. Otherwise, there are only info about the head, the apple and the current direction. You will note that not considering the tail provides better results most of the time.
 
 
-There is a bunch of models that are proposed by *Scilit Learn*. Here is a list of the classifier you can use
+There is a bunch of models that are proposed by *Scikit Learn*. Here is a list of the classifiers you can use
 
-+ *Logistic regression*
++ **Logistic regression**
+
 use ```--clf logreg```
 
-+ *SVM*
++ **SVM**
+
 use ```--clf SVM```
 
-+ *SVM with RBF kernel*
++ **SVM with RBF kernel**
+
 use ```--clf Nusvm```
 
-+ *k-Nearest Neighbors*
++ **k-Nearest Neighbors**
+
 use ```--clf kNN [--n_neighbor <Number of allowed neighbors>]```
 
-+ *MLP*
++ **MLP**
+
 use ```--clf MLP```
+
++ **One vs Rest with SVM + kernel**
+
+use ```--clf multiclass```
+
+***
 
 ### Run Deep Q Reinforcement learning
 
@@ -74,15 +111,15 @@ There are already trained networks that you can test, but you can also run the t
 
 #### Train a model
 
-Run
+Run the following command in a terminal:
 ```
 python snake_train_test.py --mode train --version <model version> [--retrain <training number>] --step <number of step> [--initial_eps <eps value>] [--weights <file name>]
 ```
-+ The model versions are ```v1``` ```v2``` ```v3```. You can [add a custom version model](#custom) if you wish.
++ The model versions are ```v1``` ```v2``` ```v3``` ```v4```. You can [add a custom version model](#custom) if you wish.
 
 + You have the possiblility to train again the same model. This is with ```--retrain```. You have to increment the training number every time you want to retrain a given model. Every trained version is saved in ```data\``` with  a name in the format: ```dqn_snake_weights_<model version>_<training number>.hf5```
 
-By defalut the training number is set to -1 so that the first file is number 0, so don't indicate the training number the first time you train a model. Then you can specify the trained version you want to retrain, checking if there is a corresponding ```.hf5``` folder in ```data\```.
+By defalut the training number is set to -1 so that the first file generated is number 0, so don't indicate the training number the first time you train a model. Then you can specify the trained version you want to retrain, checking if there is a corresponding ```.hf5``` folder in ```data\```.
 
 **Be carful** if the training number has no corresponding file, it will nonetheless train but with new random weights.
 
@@ -94,4 +131,45 @@ By defalut the training number is set to -1 so that the first file is number 0, 
 
 #### Add a costum model <a name="custom"></a>
 
+Open and edit the file use ```dqn\models.py```
+
+Create a new function and fill it, given the other models as templates.
+```python
+def model_custom(input_shape, nb_actions): # you can choose any other name
+  ...
+```
+
+then edit the ```model``` function by adding:
+```python
+elif version == "custom_name": # choose the name you want
+  return model_custom(input_shape, nb_actions)
+```
+
+Now you just have to call ```--version custom_name``` to use this model.
+
+#### Test a model
+
+Run the following command in a terminal:
+```
+python snake_train_test.py --mode test --version <model version> [--retrain <training number>] [--weights <file name>] --episodes <number of games>
+```
+
++ Use a version and a training number corresponding to an existing .hf5 file.
+
++ With ```--weights <file name>``` you can use a custom file name for testing. But make sure it is corresponding to the right model version!
+
++ ```--episodes <number of games>``` corresponds to the number of games that will be played.
+
+#### Make statistics on a trained model (switch to dqn branch to run this part!!!)
+
+Every time a model is (re)trained, a ```dqn_snake_log_<model version>_<training number>.json``` is created, containing data of each training episode: 
+
+loss, mae, mean q value, mean eps value, episode reward, nb episode steps,  nb steps,  episode number, duration
+
+To visualize these pieces of information, run the following command in a terminal:
+```
+python snake_train_test.py --mode stats --version <model version>
+```
+
+***
 
