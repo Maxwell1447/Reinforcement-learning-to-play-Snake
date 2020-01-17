@@ -1,6 +1,6 @@
 # Comparing different techniques of Machine Learning to play Snake
 
-![](res/v3.gif)
+![](res/v7.gif)
 
 ## How to run locally
 
@@ -93,15 +93,19 @@ use ```--clf Nusvm```
 
 + **k-Nearest Neighbors**
 
-use ```--clf kNN [--n_neighbor <Number of allowed neighbors>]```
+use ```--clf kNN [--nb_parameter <Number of allowed neighbors>]```
 
 + **MLP**
 
-use ```--clf MLP```
+use ```--clf MLP [--nb_parameter <Number of layers>]```
 
 + **One vs Rest with SVM + kernel**
 
 use ```--clf multiclass```
+
++ **Random Forest**
+
+use ```--clf Forest [--nb_parameter <Number of trees in the forest>]```
 
 ***
 
