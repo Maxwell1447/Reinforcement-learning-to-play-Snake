@@ -1,16 +1,9 @@
 from __future__ import division
 import argparse
-import json
-from env.ai_game_env import *
-from snake import *
-from rl.callbacks import FileLogger, ModelIntervalCheckpoint
-from dqn.dqn import DQNSnake
-from dqn.stat_process import stat_process
-import os
-import matplotlib.pyplot as plt
-from utils import smooth
+from env.ai_game_env import IAGameEnv
+from snake import Grid
 
-grid = Grid(10, 10, 10)
+grid = Grid(10, 10, 40)
 env = IAGameEnv(grid)
 
 INPUT_SHAPE = (40, 40)
@@ -22,13 +15,21 @@ parser.add_argument('--mode', choices=['train', 'test', 'stats'], default='train
 parser.add_argument('--weights', type=str, default=None)
 parser.add_argument('--retrain', type=int, default=-1)
 parser.add_argument('--step', type=int, default=0)
+parser.add_argument('--step_size', type=float, default=.00025)
 parser.add_argument('--episodes', type=int, default=5)
 parser.add_argument('--initial_eps', type=float, default=0.3)
+parser.add_argument('--final_eps', type=float, default=0.01)
 parser.add_argument('--version', type=str, default="v1")
 parser.add_argument('--FPS', type=int, default=25)
+parser.add_argument('--display',
+                    choices=['loss', 'mae', 'mean_q', 'mean_eps', 'episode_reward', 'nb_episode_steps', 'nb_steps',
+                             'episode', 'duration'], default='episode_reward')
 args = parser.parse_args()
 
 if args.mode == 'test':
+    from dqn.dqn import DQNSnake
+    from dqn.stat_process import stat_process
+
     dqn = DQNSnake(env, input_shape, args.version, args.initial_eps)
     if args.weights:
         weights_filename = "data\\" + args.weights
@@ -41,7 +42,10 @@ if args.mode == 'test':
     stat_process(history)
 
 elif args.mode == 'train':
-    dqn = DQNSnake(env, input_shape, args.version, args.initial_eps)
+    from rl.callbacks import FileLogger, ModelIntervalCheckpoint
+    from dqn.dqn import DQNSnake
+
+    dqn = DQNSnake(env, input_shape, args.version, args.initial_eps, args.step_size, final_eps=args.final_eps)
     if args.weights:
         weights_filename = "data\\" + args.weights
     else:
@@ -63,6 +67,11 @@ elif args.mode == 'train':
     dqn.save_weights(new_weights_filename, overwrite=True)
 
 elif args.mode == 'stats':
+    import json
+    import os
+    import matplotlib.pyplot as plt
+    from utils import smooth
+
     done = False
     retrain = max(0, args.retrain)
     infos = []
@@ -78,11 +87,10 @@ elif args.mode == 'stats':
 
     legends = []
     for i, info in enumerate(infos):
-        plt.plot(info['episode'], smooth(info['episode_reward']))
+        plt.plot(info['episode'], smooth(info[args.display]))
+        plt.xlabel("episode number")
+        plt.ylabel(args.display)
         legends.append("retrain {}".format(i))
-        # plt.plot(info['episode'], smooth(info['loss']))
-        # plt.plot(info['episode'], smooth(info['mae']))
-        # plt.plot(info['episode'], smooth(info['nb_episode_steps']))
     plt.legend(legends)
 
     plt.show()

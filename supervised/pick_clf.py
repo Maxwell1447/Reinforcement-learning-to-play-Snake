@@ -34,41 +34,41 @@ def NuSVM():
     """
     Wraps initialization of a Nu-Support Vector Classifier
     """
-    clf = NuSVC(kernel='rbf', random_state=0, gamma='auto', verbose=True, tol=1e-5)
+    clf = NuSVC(kernel='rbf', random_state=0, shrinking=0, gamma='auto', verbose=True, tol=1e-5)
     return clf
 
 
-def MLP():
+def MLP(nb_hidden_layer):
     """
     Wraps initialization of a Multi-layer Perceptron Classifier.
     """
-    clf = MLPClassifier(hidden_layer_sizes=(70, ), activation='relu', solver='adam', max_iter=1000, n_iter_no_change = 10, verbose=True, tol=1e-5)
+    clf = MLPClassifier(hidden_layer_sizes=(nb_hidden_layer, ), activation='relu', solver='adam', max_iter=1000, n_iter_no_change = 10, verbose=True, tol=1e-5)
     return clf
 
-def RandomForest():
+def RandomForest(nb_estimator):
     """
     Wraps initialization of a Random Forest Classifier
     """
-    clf = RandomForestClassifier(n_estimators=50, criterion='gini', max_depth=None, max_features='auto', n_jobs=-1, verbose=1)
+    clf = RandomForestClassifier(n_estimators=nb_estimator, criterion='gini', max_depth=None, max_features='auto', n_jobs=-1, verbose=1)
     return clf
     
 
 
-def pick_clf(clf_name, n):
+def pick_clf(clf_name, nb_parameter):
     if clf_name == 'logreg':
         clf = logreg()
     elif clf_name == 'kNN':
-        clf = kNN(n)
+        clf = kNN(nb_parameter)
     elif clf_name == 'SVM':
         clf = SVM()
     elif clf_name == 'Nusvm':
         clf = NuSVM()
     elif clf_name == 'MLP':
-        clf = MLP()
+        clf = MLP(nb_parameter)
     elif clf_name == 'Forest':
-        clf = RandomForest()
+        clf = RandomForest(nb_parameter)
     elif clf_name == 'multiclass':
-        clf = OneVsRestClassifier(SVC(gamma='auto', verbose=True))
+        clf = OneVsRestClassifier(SVC(gamma='auto', verbose=True), n_jobs=-1)
     else:
         raise ValueError("Wrong classifier name")
     return clf

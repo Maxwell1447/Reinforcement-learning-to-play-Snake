@@ -1,6 +1,8 @@
 from __future__ import division
 import argparse
 import pandas as pd
+import numpy as np
+import os
 
 from env.a_star_path_finder_env import AStarEnv
 from env.greedy_path_finder_env import GreedyEnv
@@ -18,8 +20,8 @@ parser.add_argument('--clf', choices=['logreg', 'kNN', 'SVM', 'Nusvm', 'MLP', 'F
 parser.add_argument('--all_data', action='store_true', default=False)
 parser.add_argument('--grid', type=int, default=20)
 parser.add_argument('--poly_features', action='store_true', default=False)
-parser.add_argument('--predict_and_test', action='store_true', default=False)
-parser.add_argument('--n_neighbor', type=int, default=20)
+parser.add_argument('--predict_and_test', action='store_true', default=True)
+parser.add_argument('--nb_parameter', type=int, default=50)
 parser.add_argument('--path_finder', choices=['greedy', 'a_star'], default='greedy')
 
 args = parser.parse_args()
@@ -33,10 +35,13 @@ if args.mode == 'feed':
     else:
         raise ValueError("wrong pathfinder arg")
     for i in range(args.episode):
-        env.play(data_feeding=not args.no_feed_data, wait=not bool(i))
+        print("episode ", i + 1)
+        steps, score = env.play(data_feeding=not args.no_feed_data, wait=not bool(i))
+        print("steps = ", steps)
+        print("apple score = ", score)
 
 if args.mode == 'train-test':
-    clf = pick_clf.pick_clf(args.clf, args.n_neighbor)
+    clf = pick_clf.pick_clf(args.clf, args.nb_parameter)
     datapath = "data\\data_{}_{}.csv".format(args.path_finder, args.grid)
 
     data = pd.read_csv(datapath)
@@ -61,8 +66,19 @@ if args.mode == 'train-test':
         print('ACC multinomial: ', acc_test)
 
     grid = Grid(args.grid, args.grid, 30)
-
-    ai_class = ClassifierEnv(grid, clf, args.all_data, args.poly_features)
-    steps, score = ai_class.play()
-    print("steps = ", steps)
-    print("apple score = ", score)
+    
+    for i in range(args.episode):
+        ai_class = ClassifierEnv(grid, clf, args.all_data, args.poly_features)
+        steps, score = ai_class.play(wait=not bool(i))
+        print("episode ", i + 1)
+        print("steps = ", steps)
+        print("apple score = ", score)
+        path = '.\\data\\supervised_{}.csv'.format(args.clf)
+        header = not os.path.exists(path)
+        df = pd.DataFrame({'steps': [steps], 'apple_score': [score-1], 'score': [(score-1)*50-steps-100], 'size': [args.grid], 
+                           'path_finder': [args.path_finder], 'poly_features': [args.poly_features], 'all_data': [args.all_data] })
+        if args.clf in ['kNN', 'MLP', 'Forest']:
+            df['nb_parameter'] = [args.nb_parameter]
+        else:
+            df['nb_parameter'] = [0]
+        df.to_csv(path, mode='a', header=header, index=False)
