@@ -18,7 +18,7 @@ def kNN(n_neighbor):
     """
     We create an instance of a Nearest Neighbours Classifier
     """
-    clf = neighbors.KNeighborsClassifier(n_neighbors=n_neighbor)
+    clf = neighbors.KNeighborsClassifier(n_neighbors=n_neighbor, n_jobs=-1)
     return clf
 
 
@@ -34,7 +34,7 @@ def NuSVM():
     """
     Wraps initialization of a Nu-Support Vector Classifier
     """
-    clf = NuSVC(kernel='rbf', random_state=0, shrinking=0, gamma='auto', verbose=True, tol=1e-5)
+    clf = NuSVC(kernel='rbf', random_state=0, shrinking=True, gamma='auto', verbose=True, tol=1e-5)
     return clf
 
 

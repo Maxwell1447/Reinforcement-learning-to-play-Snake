@@ -12,6 +12,28 @@ import supervised.pick_clf as pick_clf
 import supervised.preprocess_and_accuracy as preprocess_and_accuracy
 from env.classifier_env import ClassifierEnv
 
+'''
+--mode:   feed: generate data for the supervised classification 
+          train-test: fit the model to the data and test the model
+--no_feed_data: if True no data collected
+--episode: number of iterations
+--clf: name of the classifier
+--all_data: If True use all the data to fit the model. If False, the model will not use the data of the body
+--grid: size of the grid
+--poly_features: if True add polynomial features to the data. WARNING use this only when all_data = False
+--predict_and_test: if True test on the training set and display the training accuracy
+--nb_parameter: only apply when clf =  kNN, MLP, Forest
+                for kNN number of neighbors
+                for MLP number of layers
+                for Forest number of trees
+--path_finder: type of path_finder to use, two choices, greedy and a_star. a_star is better but more complex. 
+               a_star is an implementation of the A star algorithm.
+               greedy is a greedy algorithm that takes the shortest path to the apple and turns whenever he can.
+'''
+
+
+
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--mode', choices=['feed', 'train-test'], default='train-test')
 parser.add_argument('--no_feed_data', action='store_true', default=False)
