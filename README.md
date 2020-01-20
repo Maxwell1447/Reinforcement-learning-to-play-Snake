@@ -119,7 +119,7 @@ Run the following command in a terminal:
 ```
 python snake_train_test.py --mode train --version <model version> [--retrain <training number>] --step <number of step> [--initial_eps <eps value>] [--weights <file name>]
 ```
-+ The model versions are ```v1``` ```v2``` ```v3``` ```v4```. You can [add a custom version model](#custom) if you wish.
++ The model versions are ```v1``` ```v2``` ```v3``` ```v4``` ```v5``` ```v6``` ```v7``` ```v8```. You can [add a custom version model](#custom) if you wish.
 
 + You have the possiblility to train again the same model. This is with ```--retrain```. You have to increment the training number every time you want to retrain a given model. Every trained version is saved in ```data\``` with  a name in the format: ```dqn_snake_weights_<model version>_<training number>.hf5```
 
@@ -164,16 +164,18 @@ python snake_train_test.py --mode test --version <model version> [--retrain <tra
 
 + ```--episodes <number of games>``` corresponds to the number of games that will be played.
 
-#### Make statistics on a trained model (switch to dqn branch to run this part!!!)
+#### Make statistics on a trained model
 
 Every time a model is (re)trained, a ```dqn_snake_log_<model version>_<training number>.json``` is created, containing data of each training episode: 
 
-loss, mae, mean q value, mean eps value, episode reward, nb episode steps,  nb steps,  episode number, duration
+```loss```, ```mae```, ```mean_q_value```, ```mean_eps_value```, ```episode_reward```, ```nb_episode_steps```,  ```nb_steps```,  ```episode_number```, ```duration```
 
 To visualize these pieces of information, run the following command in a terminal:
 ```
-python snake_train_test.py --mode stats --version <model version>
+python snake_train_test.py --mode stats --version <model version> --display <data>
 ```
+
++ ```--display``` has the default value of ```episode_reward```
 
 ***
 
